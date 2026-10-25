@@ -1,0 +1,665 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>RELIANCE · ISEA Workstation</title>
+<meta name="description" content="RELIANCE, an independent science-fiction film by Darian Lalla and Morgan Messina. Log on to an ISEA STARFRAME 95 workstation: explore the Helios, watch recovered broadcasts, audition for the crew and help fund the mission.">
+<meta name="theme-color" content="#0a1460">
+<meta property="og:type" content="website">
+<meta property="og:title" content="RELIANCE · ISEA Workstation">
+<meta property="og:description" content="An independent sci-fi film. Log on, explore the Helios, watch the archive, audition for the crew.">
+<meta property="og:url" content="https://darskye.github.io/reliance/">
+<meta property="og:image" content="https://darskye.github.io/reliance/media/og.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="media/favicon.svg" type="image/svg+xml">
+<link rel="preload" href="fonts/PixelifySans.ttf" as="font" type="font/ttf" crossorigin>
+<link rel="preload" href="fonts/VT323.ttf" as="font" type="font/ttf" crossorigin>
+<link rel="stylesheet" href="css/os.css?v=5">
+</head>
+<body class="crt-on">
+
+<!-- the bend of the CRT glass (desktop Chrome / Edge; os.js fills in the map) -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <filter id="crt-warp" x="0" y="0" width="1" height="1" color-interpolation-filters="sRGB">
+    <feImage id="warp-map" x="0" y="0" width="100" height="100" preserveAspectRatio="none" result="map"/>
+    <feDisplacementMap id="warp-disp" in="SourceGraphic" in2="map" scale="0" xChannelSelector="R" yChannelSelector="G"/>
+  </filter>
+</svg>
+
+<noscript>
+  <div class="nojs">
+    <h1>RELIANCE</h1>
+    <p>An independent science-fiction film written by Darian Lalla &amp; Morgan Messina.</p>
+    <p>This site is an ISEA workstation and needs JavaScript switched on. Everything is also listed below.</p>
+  </div>
+</noscript>
+
+<main id="screen">
+
+  <!-- 0 ─────────────────────────────── the set is off: press power -->
+  <section id="power" class="stage on warpable" aria-label="RELIANCE">
+    <div class="power-inner">
+      <canvas id="power-emblem" class="emblem-canvas" width="260" height="260" aria-hidden="true"></canvas>
+      <h1 class="power-title">RELIANCE</h1>
+      <p class="power-sub">An independent science-fiction film<br>written by Darian Lalla &amp; Morgan Messina</p>
+      <button id="power-btn" class="power-btn" type="button">
+        <span class="power-ring" aria-hidden="true"></span>
+        <span class="power-label">Power on</span>
+      </button>
+      <p class="power-hint">ISEA WORKSTATION · STATION 7 · <span id="power-sound">SOUND ON</span></p>
+      <nav class="power-quick" aria-label="Skip the intro">
+        <span>Skip the intro:</span>
+        <a href="#archive">Watch</a><a href="#dossier">Audition</a><a href="#fund">Support</a><a href="#brief">About</a>
+      </nav>
+    </div>
+  </section>
+
+  <!-- 1 ─────────────────────────────── BIOS -->
+  <section id="bios" class="stage warpable" aria-hidden="true">
+    <canvas id="bios-emblem" class="emblem-canvas" width="180" height="180"></canvas>
+    <pre id="bios-text"></pre>
+    <p class="skip-hint">Tap or press any key to skip</p>
+  </section>
+
+  <!-- 2 ─────────────────────────────── boot splash -->
+  <section id="splash" class="stage warpable" aria-hidden="true">
+    <div class="splash-frame"></div>
+    <p class="splash-line" id="splash-line"></p>
+    <canvas id="splash-star" width="400" height="400"></canvas>
+    <canvas id="splash-word" width="900" height="150"></canvas>
+    <p class="splash-jp" lang="ja">国際宇宙探査機関</p>
+    <p class="splash-ed">ISEA WORKSTATION EDITION</p>
+    <div class="splash-load"><span>Loading...</span><div class="bar"><i></i></div></div>
+    <p class="skip-hint">Tap or press any key to skip</p>
+  </section>
+
+  <!-- 3 ─────────────────────────────── log-on -->
+  <section id="login" class="stage" aria-label="Log on to STARFRAME 95">
+    <!-- the backdrop bends with the tube; the account list on top stays sharp -->
+    <div class="login-bg warpable" aria-hidden="true">
+      <canvas class="stars" id="login-stars"></canvas>
+      <div class="login-glow"></div>
+      <div class="login-band top"></div>
+      <div class="login-band bottom"></div>
+    </div>
+    <div class="login-main">
+      <div class="login-left">
+        <canvas id="login-logo" width="900" height="160" role="img" aria-label="STARFRAME 95"></canvas>
+        <p class="login-begin">To begin, click your user name</p>
+        <p class="login-note">The crew are still logged on. Pick up where they left off, make your own account, or look around as a visitor.</p>
+      </div>
+      <div class="login-divider" aria-hidden="true"></div>
+      <div class="login-right">
+        <ul class="users" id="users" aria-label="Accounts"></ul>
+        <form id="new-form" class="new-form" hidden autocomplete="off">
+          <div class="nf-pic"><img data-icon="newuser" alt=""></div>
+          <div class="nf-fields">
+            <label for="new-name">User name</label>
+            <input id="new-name" class="field" maxlength="32" spellcheck="false" autocapitalize="words" autocomplete="nickname">
+            <label for="new-pass">Password <small>(optional)</small></label>
+            <input id="new-pass" class="field" type="password" maxlength="32" autocomplete="new-password">
+            <div class="nf-btns">
+              <button id="new-cancel" class="btn" type="button">Back</button>
+              <button class="go-btn" type="submit" aria-label="Create account and log on"><svg viewBox="0 0 40 40" aria-hidden="true"><path d="M6 15h14V7l14 13-14 13v-8H6z"/></svg></button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="login-foot">
+      <button id="turn-off" class="turnoff" type="button"><i aria-hidden="true"></i>Turn off workstation</button>
+      <span class="auth">AUTHORIZED ISEA PERSONNEL ONLY</span>
+    </div>
+
+    <!-- dial-up dialog -->
+    <div id="dialup" class="win dlg" hidden role="dialog" aria-label="Connecting to ISEA-NET">
+      <div class="win-title"><img data-icon="modem" alt=""><span>Connecting to ISEA-NET</span><span class="stripes" aria-hidden="true"><i></i><i></i><i></i><i></i></span></div>
+      <div class="win-body dial-body">
+        <div class="dial-line"><img data-icon="station" alt=""><div class="wire"><i></i><i></i><i></i><i></i><i></i></div><img data-icon="globe" alt=""></div>
+        <p class="dial-status"><b>Status:</b> <span id="dial-msg">Dialing ISEA-NET (station 7)...</span></p>
+        <div class="leds"><span><i></i>HS</span><span><i></i>AA</span><span><i></i>CD</span><span><i></i>OH</span><span><i class="rx"></i>RD</span><span><i class="rx"></i>SD</span><span><i></i>TR</span><span><i></i>MR</span></div>
+        <div class="dial-foot"><span id="dial-speed">Speed: negotiating...</span><button id="dial-cancel" class="btn" type="button">Cancel</button></div>
+      </div>
+    </div>
+    <div id="welcome" hidden>
+      <canvas id="welcome-emblem" width="420" height="420" aria-hidden="true"></canvas>
+      <p class="welcome-word">welcome</p>
+      <p class="welcome-name" id="welcome-name">Guest</p>
+    </div>
+  </section>
+
+  <!-- 4 ─────────────────────────────── the desktop -->
+  <section id="desktop" class="stage" aria-label="STARFRAME 95 desktop">
+    <canvas id="sky" class="warpable" aria-hidden="true"></canvas>
+    <canvas id="wall-gl" class="warpable" aria-hidden="true" hidden></canvas>
+    <div id="brandmark" aria-hidden="true"><canvas id="desk-logo" width="600" height="220"></canvas></div>
+    <nav id="icons" aria-label="Programs"></nav>
+    <div id="windows"></div>
+    <button id="balloon" class="balloon" type="button" hidden>
+      <img data-icon="modem" alt="">
+      <span><b id="balloon-title">ISEA-NET connected</b><span id="balloon-text">New tape recovered: The Midnight Hour</span><small id="balloon-small">Click to open the Tape Vault</small></span>
+    </button>
+    <div id="startmenu" class="startmenu" hidden>
+      <div class="sm-banner" aria-hidden="true"><span>STARFRAME<b>95</b></span></div>
+      <ul class="sm-items" id="sm-items"></ul>
+    </div>
+    <footer id="taskbar">
+      <button id="start-btn" class="start-btn" type="button" aria-haspopup="true" aria-expanded="false"><canvas id="start-star" width="48" height="48" aria-hidden="true"></canvas>START</button>
+      <div class="quick-launch" id="quick-launch"></div>
+      <div class="task-buttons" id="task-buttons"></div>
+      <div class="tray">
+        <button id="tray-sound" class="tray-btn" type="button" aria-label="Sound on/off" title="Sound"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="spk" d="M3 9h4l5-4v14l-5-4H3z"/><path class="wave" d="M15.5 8.5a5 5 0 0 1 0 7M18 6a8.5 8.5 0 0 1 0 12"/><path class="mute" d="M15 9l6 6M21 9l-6 6"/></svg></button>
+        <span class="tray-modem" title="ISEA-NET connected"><img data-icon="modem" alt=""><i></i></span>
+        <span id="clock" class="clock">21:47</span>
+      </div>
+    </footer>
+  </section>
+
+  <!-- the tube: scanlines (bent with the picture), then the glass on top -->
+  <div id="crt" aria-hidden="true"><div class="crt-lines warpable"></div></div>
+  <div id="glass" aria-hidden="true"></div>
+</main>
+<div id="toast" role="status" aria-live="polite"></div>
+
+<!-- ═════════════════════════════════ the apps (moved into windows by js/os.js) ═════════════════════════════════ -->
+<div id="apps" hidden>
+
+  <!-- WELCOME.TXT ─────────────────────────────── -->
+  <article class="app" data-app="welcome">
+    <div class="doc">
+      <h2 class="doc-h">Welcome to STARFRAME 95, <span class="user-name">Guest</span>.</h2>
+      <p><strong>RELIANCE</strong> is an independent science-fiction film written by Darian Lalla &amp; Morgan Messina. <span id="welcome-intro">This workstation holds everything the agency is cleared to tell you.</span></p>
+      <div class="launchers" id="launchers"></div>
+      <div class="latest">
+        <img data-icon="tape" alt="">
+        <p><b>Latest transmission</b><br>New tape recovered from the archive: <em>The Midnight Hour with Dale Harper</em>.</p>
+        <button class="btn" type="button" data-open="archive/midnight">Play tape</button>
+      </div>
+      <p class="tip">Tip: drag windows by their blue bars. Everything else is under <b>START</b>.</p>
+    </div>
+  </article>
+
+  <!-- MISSION BRIEF (about) ─────────────────────────────── -->
+  <article class="app" data-app="brief">
+    <div class="nav-bar">
+      <div class="nav-btns" role="tablist" aria-label="Mission brief sections">
+        <button class="nb on" type="button" data-tab="story">Story</button>
+        <button class="nb" type="button" data-tab="world">World</button>
+        <button class="nb" type="button" data-tab="crew">Crew</button>
+        <button class="nb" type="button" data-tab="production">Production</button>
+        <button class="nb" type="button" data-tab="press">Press</button>
+      </div>
+      <div class="address"><span>Address</span><code id="brief-address">isea://reliance/story</code></div>
+    </div>
+    <div class="page">
+
+      <section class="tab-panel on" data-panel="story">
+        <div class="masthead">
+          <canvas class="mast-emblem" width="200" height="200" aria-hidden="true"></canvas>
+          <div><p class="kicker">ISEA NAVIGATOR · MISSION BRIEF</p><h2 class="film-title">RELIANCE</h2><p class="motto">“Moving forward, together.”</p></div>
+        </div>
+        <p class="lede">Years after a war over energy, the world lives in <b>the Dimming</b>. Light, water, power and food are rationed, and every watt counts. The International Space Exploration Agency has one answer left: look up.</p>
+        <p>Commander Roman Reznov, Science Officer Dr. Catherine Gray and Flight Engineer John Winchester are chosen to crew the <b>Helios</b>, a three-person deep space survey vessel, on a nine-month, twenty-two-trillion-kilometre search for <b>Ichor</b>: a theorized energy source that could give humanity a fresh start on a new world.</p>
+        <p>Out there, they will have to rely on the ship, on each other, and on the agency's thinking machine, <b>Talos</b>.</p>
+        <div class="callout-row">
+          <button class="btn big" type="button" data-open="archive">▶ Watch the archive</button>
+          <button class="btn big" type="button" data-open="dossier">Join the crew</button>
+          <button class="btn big gold" type="button" data-open="fund">Fuel the mission</button>
+        </div>
+        <p class="fineprint">RELIANCE is in pre-production: casting, crewing up and crowdfunding.</p>
+      </section>
+
+      <section class="tab-panel" data-panel="world">
+        <h3 class="sec-h">The world of RELIANCE</h3>
+        <p class="muted">Agency reference files. Some entries are restricted.</p>
+        <div class="files">
+          <div class="file"><h4>The Dimming</h4><p>The age of scarcity that followed a war over energy and resources. Light, water, power and food are all rationed.</p></div>
+          <div class="file"><h4>The Allocation Bureau</h4><p>Runs the rationing. Its public information films remind everyone to report waste. Every watt counts.</p></div>
+          <div class="file"><h4>The ISEA</h4><p>The International Space Exploration Agency, searching the stars for a new source of power. Motto: moving forward, together.</p></div>
+          <div class="file"><h4>The Helios</h4><p>Hull RV-2719. A deep space survey vessel with a crew of three, hyperspace capable. <button class="link" type="button" data-open="helios">Open the ship file ▶</button></p></div>
+          <div class="file"><h4>Ichor</h4><p>A theorized energy source. If it is real, it could give humanity a fresh start on a new world.</p></div>
+          <div class="file restricted"><h4>Talos</h4><p>The agency's thinking machine. <span class="redact">FILE RESTRICTED</span> <button class="link" type="button" data-open="talos">Open TALOS.EXE ▶</button></p></div>
+          <div class="file"><h4>Kotoshima Technologies</h4><p>Makers of the CyberCuff, the wrist computer worn by every ISEA crew member.</p></div>
+          <div class="file"><h4>Cube Meal</h4><p>Four meals in one cube, and proud sponsor of the ISEA. Be there and be square!</p></div>
+        </div>
+      </section>
+
+      <section class="tab-panel" data-panel="crew">
+        <h3 class="sec-h">Crew manifest · Helios RV-2719</h3>
+        <div class="crew">
+          <div class="crew-card"><div class="crew-photo nophoto"><span>NO IMAGE<br>ON FILE</span></div>
+            <div><p class="rank">Commander</p><h4>Roman Reznov</h4><p class="quote">“The steadiest hand in the agency.” — Dr. Gray</p><p class="actor">Cast: <span class="pending">to be announced</span></p></div></div>
+          <div class="crew-card"><div class="crew-photo"><img id="gray-photo" alt="Morgan Messina as Dr. Catherine Gray, green phosphor portrait"></div>
+            <div><p class="rank">Science Officer</p><h4>Dr. Catherine Gray</h4><p class="quote">“I've always felt more at home among the stars than anywhere down here.”</p><p class="actor">Played by <b>Morgan Messina</b></p></div></div>
+          <div class="crew-card"><div class="crew-photo nophoto"><span>NO IMAGE<br>ON FILE</span></div>
+            <div><p class="rank">Flight Engineer</p><h4>John Winchester</h4><p class="quote">“...keeps the rest of us entertained.” — Dr. Gray</p><p class="actor">Cast: <span class="pending">to be announced</span></p></div></div>
+          <div class="crew-card talos-card"><div class="crew-photo face"><pre id="mini-face" aria-hidden="true"></pre></div>
+            <div><p class="rank">Agency system</p><h4>Talos</h4><p class="quote">“Hello.”</p><p class="actor"><span class="redact">CLASSIFIED</span></p></div></div>
+        </div>
+      </section>
+
+      <section class="tab-panel" data-panel="production">
+        <h3 class="sec-h">Behind the camera</h3>
+        <dl class="credits">
+          <dt>Written by</dt><dd>Darian Lalla &amp; Morgan Messina</dd>
+          <dt>Status</dt><dd>Pre-production: casting, crewing up, crowdfunding</dd>
+          <dt>Genre</dt><dd>Science fiction</dd>
+        </dl>
+        <h3 class="sec-h">Mission log</h3>
+        <ol class="log">
+          <li><time datetime="2026-10-24">2026-10-24</time><b>Workstation online.</b> The ISEA archive is open to the public.</li>
+          <li><time>OPEN</time><b>Casting call.</b> Actors and crew can file a <button class="link" type="button" data-open="dossier">Crew Dossier</button>.</li>
+          <li><time>SOON</time><b>Crowdfunding.</b> Campaigns launching on GoFundMe and Indiegogo. <button class="link" type="button" data-open="fund">Fuel Drive ▶</button></li>
+        </ol>
+      </section>
+
+      <section class="tab-panel" data-panel="press">
+        <h3 class="sec-h">Press &amp; contact</h3>
+        <p><b>Logline.</b> In a world that has run out of power, three astronauts set out across twenty-two trillion kilometres to find the one thing that could save it.</p>
+        <div class="press-grid">
+          <a class="press-item" data-link="pressKit" href="#">Press kit (EPK)<small>Stills, logos, bios</small></a>
+          <a class="press-item" data-link="contactEmail" href="#">Email the production<small>Press, casting, partners</small></a>
+          <button class="press-item" type="button" data-open="comms">Instagram<small>All ISEA-NET channels</small></button>
+        </div>
+      </section>
+    </div>
+  </article>
+
+  <!-- HELIOS.SYS ─────────────────────────────── -->
+  <article class="app" data-app="helios">
+    <div class="tabs" role="tablist" aria-label="Helios views">
+      <button class="tab on" type="button" data-tab="wire">Wireframe</button>
+      <button class="tab" type="button" data-tab="spec">Spec film</button>
+      <button class="tab" type="button" data-tab="deck">Flight deck</button>
+    </div>
+    <section class="tab-panel on" data-panel="wire">
+      <div class="helios">
+        <div class="cad">
+          <canvas id="helios-canvas"></canvas>
+          <div class="hud tl">ISEA TECH ARCHIVE // VDB-04<br><span class="g">VESSEL HELIOS · HULL RV-2719</span></div>
+          <div class="hud tr" id="helios-az">AZ 000 · EL 24</div>
+          <div class="hud bl">DRAG TO ROTATE · SCROLL / PINCH TO ZOOM</div>
+        </div>
+        <aside class="specs">
+          <p class="kicker">DEEP SPACE SURVEY VESSEL</p>
+          <h3 class="ship-name">HELIOS</h3>
+          <dl class="spec-list">
+            <dt>Hull</dt><dd>RV-2719</dd>
+            <dt>Crew</dt><dd>3</dd>
+            <dt>Length</dt><dd id="spec-len">27.5 m</dd>
+            <dt>Span</dt><dd id="spec-span">22.0 m</dd>
+            <dt>Height</dt><dd id="spec-hgt">6.4 m</dd>
+            <dt>Range</dt><dd>22 trillion km</dd>
+            <dt>Drive</dt><dd>Hyperspace capable</dd>
+          </dl>
+          <p class="sys-h">SYSTEMS · tap to inspect</p>
+          <div class="sys-btns" id="helios-systems"></div>
+          <div class="sys-card" id="helios-card"><b>ALL SYSTEMS</b><span>Select a system to highlight it on the wireframe.</span></div>
+        </aside>
+      </div>
+    </section>
+    <section class="tab-panel" data-panel="spec">
+      <div class="tv-wrap"><div class="tv"><video data-src="ship" controls playsinline preload="none"></video><span class="tv-badge">ISEA</span><i class="tv-led"></i></div>
+      <p class="tv-cap"><b>Helios Spec Film.</b> The ship as an early-80s CAD wireframe: dimensions, systems, thermal and section views.</p></div>
+    </section>
+    <section class="tab-panel" data-panel="deck">
+      <div class="tv-wrap"><div class="tv"><video data-src="cockpit" controls playsinline preload="none"></video><span class="tv-badge">ISEA</span><i class="tv-led"></i></div>
+      <p class="tv-cap"><b>Helios Flight Deck.</b> The deck powers up in orbit as the sun comes over the horizon.</p></div>
+    </section>
+  </article>
+
+  <!-- TAPE VAULT (archive) ─────────────────────────────── -->
+  <article class="app" data-app="archive">
+    <div class="vault">
+      <div class="vault-player">
+        <div class="tv"><video id="vault-video" controls playsinline preload="none"></video><span class="tv-badge">ISEA</span><i class="tv-led"></i></div>
+        <div class="vault-info">
+          <p class="kicker" id="vault-cat">ISEA ARCHIVE</p>
+          <h3 id="vault-title">Select a tape</h3>
+          <p class="muted" id="vault-meta"></p>
+          <p id="vault-desc">Recovered broadcasts, commercials and recordings. Choose a tape to load it into the deck.</p>
+          <button class="btn" type="button" id="vault-share">Copy link to this tape</button>
+        </div>
+      </div>
+      <div class="vault-list" id="vault-list" role="list"></div>
+    </div>
+  </article>
+
+  <!-- CREW DOSSIER (auditions) ─────────────────────────────── -->
+  <article class="app" data-app="dossier">
+    <div class="doc dossier">
+      <div class="form-head">
+        <canvas class="mast-emblem" width="200" height="200" aria-hidden="true"></canvas>
+        <div><p class="kicker">ISEA PERSONNEL OFFICE · FORM 7-A</p><h2 class="doc-h">Crew Dossier</h2><p class="muted">The ISEA is recruiting. RELIANCE is casting actors and building a crew.</p></div>
+      </div>
+      <div class="positions">
+        <div><h4>Cast</h4><p>Speaking roles · background and extras (agency staff, Bureau officers, broadcast faces) · voice roles</p></div>
+        <div><h4>Crew</h4><p>Camera · lighting and grip · sound · art department and props · costume · hair, makeup and SFX makeup · VFX and animation · editing · music · production assistants</p></div>
+      </div>
+      <p class="muted small">No experience? File anyway. Every mission needs people who show up.</p>
+
+      <form id="dossier-form" class="form" novalidate>
+        <fieldset>
+          <legend>Section 1 · Identification</legend>
+          <div class="row2">
+            <label>Full name *<input class="field" name="name" required maxlength="80" autocomplete="name"></label>
+            <label>Email *<input class="field" name="email" type="email" required maxlength="120" autocomplete="email"></label>
+          </div>
+          <div class="row2">
+            <label>Phone<input class="field" name="phone" type="tel" maxlength="40" autocomplete="tel"></label>
+            <label>City / region *<input class="field" name="location" required maxlength="80" autocomplete="address-level2"></label>
+          </div>
+        </fieldset>
+        <fieldset>
+          <legend>Section 2 · Assignment requested</legend>
+          <div class="radios" role="radiogroup" aria-label="Applying for">
+            <label class="chip"><input type="radio" name="track" value="Cast" checked><span>Cast</span></label>
+            <label class="chip"><input type="radio" name="track" value="Crew"><span>Crew</span></label>
+            <label class="chip"><input type="radio" name="track" value="Cast and crew"><span>Both</span></label>
+          </div>
+          <p class="field-h">Positions (pick any)</p>
+          <div class="chips" id="role-chips"></div>
+        </fieldset>
+        <fieldset>
+          <legend>Section 3 · Service record</legend>
+          <label>Experience<textarea class="field" name="experience" rows="4" maxlength="2000" placeholder="Training, past productions, skills, anything we should know."></textarea></label>
+          <div class="row2">
+            <label>Reel / portfolio / IMDb link<input class="field" name="links" maxlength="300" placeholder="https://"></label>
+            <label>Instagram<input class="field" name="instagram" maxlength="60" placeholder="@"></label>
+          </div>
+          <label>Availability<input class="field" name="availability" maxlength="200" placeholder="Dates, weekends only, flexible..."></label>
+        </fieldset>
+        <fieldset>
+          <legend>Section 4 · ID badge photo (optional)</legend>
+          <div class="photo-pick">
+            <label class="btn file-btn">Choose photo<input type="file" id="badge-photo" accept="image/*"></label>
+            <p class="muted small">Only used to print your ID badge on this screen. It is not uploaded. To send us a headshot, put a link to it in Section 3.</p>
+          </div>
+        </fieldset>
+        <div class="checks">
+          <label class="check"><input type="checkbox" name="adult" value="yes" required><span>I am 18 or older (or applying with a parent or guardian's permission). *</span></label>
+          <label class="check"><input type="checkbox" name="consent" value="yes" required><span>The production may contact me about RELIANCE. *</span></label>
+        </div>
+        <input type="text" name="_gotcha" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <p class="form-err" id="dossier-err" role="alert"></p>
+        <button class="btn big transmit" type="submit">Transmit dossier ▶</button>
+      </form>
+
+      <div class="badge-out" id="badge-out" hidden>
+        <p class="kicker" id="badge-status">DOSSIER RECEIVED</p>
+        <h3 class="doc-h">Your ISEA ID is printing.</h3>
+        <p id="badge-msg" class="muted"></p>
+        <div class="badge-wrap"><canvas id="badge-canvas" width="640" height="1000" aria-label="Your ISEA ID badge"></canvas></div>
+        <div class="callout-row">
+          <button class="btn big" type="button" id="badge-save">Save badge</button>
+          <button class="btn" type="button" id="badge-again">File another dossier</button>
+        </div>
+        <p class="muted small">Post your badge and tag us on Instagram.</p>
+      </div>
+    </div>
+  </article>
+
+  <!-- ISEA-NET (instagram) ─────────────────────────────── -->
+  <article class="app" data-app="comms">
+    <div class="doc comms">
+      <div class="comms-head"><img data-icon="dish" alt=""><div><p class="kicker">ISEA-NET · COMMS ARRAY</p><h2 class="doc-h">Channels</h2><p class="muted" id="comms-count">Scanning...</p></div></div>
+      <div class="channels" id="channels"></div>
+      <div class="mailbox">
+        <h4>Transmission list</h4>
+        <p class="muted small">Casting calls, campaign launch, first footage. One email when it matters.</p>
+        <form class="mail-form" data-list="comms">
+          <input class="field" type="email" name="email" placeholder="your@email" required aria-label="Email address" autocomplete="email">
+          <input type="text" name="_gotcha" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+          <button class="btn" type="submit">Subscribe</button>
+        </form>
+      </div>
+      <button class="btn" type="button" id="share-site">Copy link to this workstation</button>
+    </div>
+  </article>
+
+  <!-- FUEL DRIVE (fund) ─────────────────────────────── -->
+  <article class="app" data-app="fund">
+    <div class="doc fund">
+      <p class="kicker">HELIOS FUEL DRIVE</p>
+      <h2 class="doc-h">Fuel the mission.</h2>
+      <p>RELIANCE is an independent film. Your support builds the Helios, suits up the crew and gets the camera rolling.</p>
+      <div class="gauge" aria-label="Fuel gauge: awaiting ignition">
+        <div class="gauge-cells"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+        <p><span>FUEL LEVEL</span><b class="blink">AWAITING IGNITION</b></p>
+      </div>
+      <div class="fund-btns">
+        <a class="fund-btn gfm" data-link="gofundme" href="#"><b>GoFundMe</b><small class="fund-state">Launching soon</small></a>
+        <a class="fund-btn igg" data-link="indiegogo" href="#"><b>Indiegogo</b><small class="fund-state">Launching soon</small></a>
+      </div>
+      <h4 class="sec-h">What your watts power</h4>
+      <ul class="powers">
+        <li><img data-icon="ship" alt=""><span><b>The Helios</b> flight deck and interior sets</span></li>
+        <li><img data-icon="idcard" alt=""><span><b>Costumes and props</b>, CyberCuffs included</span></li>
+        <li><img data-icon="tape" alt=""><span><b>Camera, lights and sound</b></span></li>
+        <li><img data-icon="cube" alt=""><span><b>Crew meals</b> (real ones, not Cube Meals)</span></li>
+      </ul>
+      <div class="mailbox">
+        <h4>Get the launch transmission</h4>
+        <p class="muted small">We will email you the moment the campaigns go live.</p>
+        <form class="mail-form" data-list="fund">
+          <input class="field" type="email" name="email" placeholder="your@email" required aria-label="Email address" autocomplete="email">
+          <input type="text" name="_gotcha" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+          <button class="btn" type="submit">Notify me</button>
+        </form>
+      </div>
+      <p class="fineprint">The Allocation Bureau reminds you: every watt counts.</p>
+    </div>
+  </article>
+
+  <!-- TALOS.EXE ─────────────────────────────── -->
+  <article class="app" data-app="talos">
+    <div class="term" id="talos-term">
+      <div class="term-out" id="talos-out" aria-live="polite"></div>
+      <form class="term-in" id="talos-form" autocomplete="off"><span aria-hidden="true">&gt;</span><input id="talos-input" aria-label="Type to Talos" spellcheck="false" autocapitalize="off" maxlength="120"></form>
+    </div>
+  </article>
+
+  <!-- DISPOSAL (bin) ─────────────────────────────── -->
+  <article class="app" data-app="bin">
+    <div class="doc bin">
+      <ul class="bin-list" id="bin-list"></ul>
+      <p class="bin-note" id="bin-note">Select a file.</p>
+      <button class="btn" type="button" id="bin-empty">Empty Disposal</button>
+    </div>
+  </article>
+
+  <!-- ══════════════ Reznov ══════════════ -->
+  <article class="app" data-app="tour">
+    <div class="doc tour">
+      <div class="tour-head"><img data-icon="station" alt=""><div><h2 class="doc-h">Welcome back, Commander.</h2>
+        <p>You last logged on <b>214 days ago</b>. You have <b>0</b> new messages.</p></div></div>
+      <p>Would you like to take the STARFRAME 95 tour?</p>
+      <div class="callout-row"><button class="btn big" type="button" data-open="welcome">Take the tour</button><button class="btn" type="button" id="tour-no">No thanks</button></div>
+      <label class="check"><input type="checkbox" checked disabled><span>Show this screen every time I log on</span></label>
+    </div>
+  </article>
+  <article class="app" data-app="orders">
+    <div class="notepad"><div class="np-menu" aria-hidden="true"><span>File</span><span>Edit</span><span>Search</span><span>Help</span></div>
+<pre class="np-text">ISEA FLIGHT OPERATIONS · PRIORITY ORDERS
+TO:   CMDR. R. REZNOV
+RE:   HELIOS SURVEY · HULL RV-2719
+
+1. Assume command of the deep space survey vessel Helios.
+2. Crew of three: Science Officer Dr. C. Gray,
+   Flight Engineer J. Winchester.
+3. Duration: nine months. Distance: twenty-two trillion
+   kilometres.
+4. Objective: locate, assess and bring home Ichor.
+5. All field decisions are at the Commander's discretion.
+
+Moving forward, together.
+
+                                   [in pen, in the margin]
+                                                  Read. —R.</pre></div>
+  </article>
+
+  <!-- ══════════════ Gray ══════════════ -->
+  <article class="app" data-app="ichor">
+    <div class="lab">
+      <div class="lab-view">
+        <canvas id="ichor-canvas"></canvas>
+        <div class="hud tl">ISEA XENOGEOLOGY LAB · BAY 2<br><span class="g">SPECIMEN IC-0417</span></div>
+        <div class="hud tr" id="ichor-hud">VISIBLE · 0.42 HZ</div>
+        <div class="hud bl">DRAG TO ROTATE · SCROLL / PINCH TO ZOOM</div>
+        <div class="lab-modes" role="tablist" aria-label="Imaging mode">
+          <button class="lab-mode on" type="button" data-mode="0">Visible</button>
+          <button class="lab-mode" type="button" data-mode="1">UV</button>
+          <button class="lab-mode" type="button" data-mode="2">Thermal</button>
+          <button class="lab-mode" type="button" data-mode="3">Scan</button>
+        </div>
+        <p class="lab-fallback blink" id="ichor-loading">WARMING UP SPECTROMETER...</p>
+        <p class="lab-fallback" id="ichor-fallback" hidden>SPECTRAL VIEW OFFLINE<br>This device can't draw the 3D specimen.</p>
+      </div>
+      <aside class="lab-panel">
+        <p class="kicker">SPECIMEN IC-0417 · PROVISIONAL</p>
+        <h3 class="ship-name">ICHOR</h3>
+        <dl class="spec-list">
+          <dt>Class</dt><dd>Unclassified mineral</dd>
+          <dt>Mass</dt><dd>412 g</dd>
+          <dt>Surface</dt><dd id="ic-temp">31.4 °C</dd>
+          <dt>Pulse</dt><dd id="ic-pulse">0.42 Hz</dd>
+          <dt>Energy</dt><dd id="ic-energy" class="blink">OFF SCALE</dd>
+          <dt>Match</dt><dd>None on file</dd>
+        </dl>
+        <p class="sys-h">SPECTRAL RESPONSE</p>
+        <canvas id="ichor-spectrum" class="spectrum"></canvas>
+        <button class="btn" type="button" id="ichor-scan">Run deep scan</button>
+        <div class="sys-card" id="ichor-readout"><b>READY</b><span>Pick an imaging mode, or run a deep scan.</span></div>
+        <form class="obs-form" id="ichor-obs">
+          <label for="obs-text">Log an observation</label>
+          <textarea id="obs-text" class="field" rows="2" maxlength="300" placeholder="What do you see?"></textarea>
+          <button class="btn" type="submit">Add to research log</button>
+        </form>
+      </aside>
+    </div>
+  </article>
+  <article class="app" data-app="notes">
+    <div class="notepad"><div class="np-menu" aria-hidden="true"><span>File</span><span>Edit</span><span>Search</span><span>Help</span></div>
+<pre class="np-text" id="notes-text">RESEARCH LOG · DR. C. GRAY · SPECIMEN IC-0417
+
+LOG 109
+Specimen arrived sealed in a lead case. Designation
+IC-0417. Working name: Ichor.
+
+LOG 112
+Surface temperature 31.4 °C in a 19 °C room. No
+measurable heat source. It is simply warm.
+
+LOG 113
+The lines pulse at 0.42 Hz. Steady and slow.
+Like something resting.
+
+LOG 114
+Ran the numbers three times. If the readings are right,
+a piece this size could light a city block for a year.
+Don't get excited, Cat.
+
+LOG 115
+Requested a second specimen. Denied.
+"Go out and find more yourself, Doctor."
+Fine. I will.</pre></div>
+  </article>
+
+  <!-- ══════════════ Winchester ══════════════ -->
+  <article class="app" data-app="diag">
+    <div class="diag">
+      <div class="diag-grid">
+        <section class="dpanel"><h4>MAIN DRIVE · 6 NOZZLES</h4><div class="nozzles" id="d-nozzles"></div><p>OUTPUT <b id="d-out">98.2%</b></p></section>
+        <section class="dpanel"><h4>REACTOR CORE</h4><canvas id="d-dial" class="dial"></canvas><p>TEMP <b id="d-temp">812 K</b></p></section>
+        <section class="dpanel"><h4>THRUSTER PODS</h4><div class="pods"><span>PORT</span><i><b id="d-pod-l"></b></i><span>STBD</span><i><b id="d-pod-r"></b></i></div><p>TRIM <b id="d-trim">0.02°</b></p></section>
+        <section class="dpanel"><h4>SHIP STATUS</h4><ul class="dstat" id="d-stat"></ul></section>
+        <section class="dpanel wide"><h4>STARFRAME CPU · NEURAL CO-PROCESSOR</h4><canvas id="d-graph" class="dgraph"></canvas></section>
+      </div>
+      <div class="diag-log" id="d-log" aria-live="polite"></div>
+      <div class="diag-btns"><button class="btn" type="button" id="d-tune">Tune-up</button><button class="btn" type="button" id="d-coffee">Divert power: coffee</button></div>
+    </div>
+  </article>
+  <article class="app" data-app="mixtape">
+    <div class="deck">
+      <div class="cassette" id="mx-cassette">
+        <div class="cs-label"><b id="mx-title">MIXTAPE VOL. 1</b><small>J.W. · DO NOT TAPE OVER</small></div>
+        <div class="cs-window"><i class="reel"></i><span class="cs-tape"></span><i class="reel"></i></div>
+      </div>
+      <canvas id="mx-viz" class="mx-viz"></canvas>
+      <div class="mx-bar"><span id="mx-time">0:00</span><input id="mx-seek" type="range" min="0" max="1000" value="0" aria-label="Position"><span id="mx-len">0:00</span></div>
+      <div class="mx-controls">
+        <button class="btn" type="button" id="mx-prev" aria-label="Previous track">|◀◀</button>
+        <button class="btn big" type="button" id="mx-play" aria-label="Play">▶</button>
+        <button class="btn" type="button" id="mx-next" aria-label="Next track">▶▶|</button>
+      </div>
+      <ol class="mx-list" id="mx-list"></ol>
+    </div>
+  </article>
+  <article class="app" data-app="mines">
+    <div class="mines">
+      <div class="mn-head">
+        <span class="seg" id="mn-left">010</span>
+        <button class="btn mn-face" type="button" id="mn-face" aria-label="New game">(^_^)</button>
+        <span class="seg" id="mn-time">000</span>
+      </div>
+      <div class="mn-grid" id="mn-grid" role="grid" aria-label="Debris field"></div>
+      <div class="mn-foot"><button class="btn" type="button" id="mn-flag" aria-pressed="false">Flag mode: off</button><span class="muted small">Right-click or long-press to flag</span></div>
+      <p class="mn-msg" id="mn-msg">Clear the sector. Numbers count the debris next to a square.</p>
+    </div>
+  </article>
+  <article class="app" data-app="snake">
+    <div class="snake">
+      <div class="sn-head"><span>SCORE <b id="sn-score">0</b></span><span>BEST <b id="sn-best">0</b></span></div>
+      <div class="sn-wrap"><canvas id="sn-canvas" width="400" height="400"></canvas>
+        <button class="sn-start" type="button" id="sn-start">CUBE CRUNCH<small>Eat the Cube Meals. Don't eat yourself.<br>Arrow keys / WASD, or swipe. Tap to start.</small></button></div>
+      <div class="sn-pad" aria-label="Controls">
+        <button class="btn" type="button" data-dir="up" aria-label="Up">▲</button>
+        <button class="btn" type="button" data-dir="left" aria-label="Left">◀</button>
+        <button class="btn" type="button" data-dir="down" aria-label="Down">▼</button>
+        <button class="btn" type="button" data-dir="right" aria-label="Right">▶</button>
+      </div>
+    </div>
+  </article>
+  <article class="app" data-app="jokes">
+    <div class="notepad"><div class="np-menu" aria-hidden="true"><span>File</span><span>Edit</span><span>Search</span><span>Help</span></div>
+<pre class="np-text">WINCHESTER'S JOKES (VOL. 1 OF 9)
+
+1. How do you throw a party in space?
+   You planet.
+
+2. Favourite key on an astronaut's keyboard?
+   The space bar.
+
+3. Cube Meals are perfectly good food.
+   They're just a bit square.
+
+4. I asked Talos to tell me a joke.
+   He said "your engine calibration".
+   Rude. Accurate, but rude.
+
+5. The Commander smiled once.
+   Nobody has proof.
+
+6. Why did the Helios crew stop playing cards?
+   Someone was standing on the deck.
+
+[file continues for 408 MB]</pre></div>
+  </article>
+</div>
+
+<script src="js/config.js?v=5"></script>
+<script src="js/lib/kit.js"></script>
+<script src="js/lib/emblem.js"></script>
+<script src="js/lib/starframe.js"></script>
+<script src="js/lib/ship_lines.js"></script>
+<script src="js/lib/gray_photo.js"></script>
+<script src="js/lib/talos_face.js"></script>
+<script src="js/desktops.js?v=5"></script>
+<script src="js/ichor.js?v=5"></script>
+<script src="js/os.js?v=5"></script>
+<script src="js/apps.js?v=5"></script>
+<script src="js/crew-apps.js?v=5"></script>
+<script src="js/games.js?v=5"></script>
+</body>
+</html>
