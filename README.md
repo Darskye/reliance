@@ -69,11 +69,21 @@ It has to be served, not double-clicked (browsers block some of it from plain fi
 python -m http.server 8417
 ```
 
-Then open http://localhost:8417. Handy links: `#archive`, `#archive/midnight`, `#dossier`, `#fund`, `#brief`, `#helios`, `#talos` go straight to that program and skip the intro. Use them in your Instagram bio, e.g. `yoursite.com/#dossier` for a casting call.
+Then open http://localhost:8417. Handy links: `#archive`, `#archive/midnight`, `#dossier`, `#fund`, `#brief`, `#helios`, `#talos` go straight to that program and skip the intro.
 
-## Put it online
+## It's online
 
-It's a plain folder of files: no build step, no server code. Any static host works (GitHub Pages, Cloudflare Pages, Netlify). Upload the whole `reliance-site` folder. Once you have the real web address, change `media/og.jpg` in the `og:image` line of `index.html` to the full address (e.g. `https://yoursite.com/media/og.jpg`) so Instagram, iMessage and others show the preview picture.
+**Live at https://darskye.github.io/reliance/**, served by GitHub Pages from the `main` branch of [github.com/Darskye/reliance](https://github.com/Darskye/reliance). This folder is that repo.
+
+To update the live site, save your changes, then from this folder:
+
+```bash
+git add -A && git commit -m "Describe the change" && git push
+```
+
+GitHub rebuilds it in a minute or two. Handy links for Instagram: `https://darskye.github.io/reliance/#dossier` (casting), `#fund`, `#archive/midnight`.
+
+If you move it to your own domain later, change the two `darskye.github.io/reliance` addresses in the `og:url` and `og:image` lines of `index.html` so link previews keep their picture.
 
 After changing a `.js` or `.css` file, bump the `?v=5` on its line in `index.html` (to `?v=6` and so on). Otherwise people who visited before may keep seeing the old version from their browser's cache.
 
