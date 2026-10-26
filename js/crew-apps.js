@@ -258,4 +258,138 @@
     close() { cancelAnimationFrame(mx.raf); if (mx.audio) mx.audio.pause(); },
     reset() { H.mixtape.close(); if (mx.audio) mxLoad(0, false); },
   };
+
+  // ════════════════════════════════════════════════════════════════ EVERYONE: the journal
+  // crew journals are written in desktops.js (in each one's own ink); visitors and new accounts write their own
+  const journalKey = () => 'journal_' + OS.account.key;
+  H.journal = {
+    init() {
+      $('#jr-new').addEventListener('submit', e => {
+        e.preventDefault();
+        const v = $('#jr-text').value.trim(); if (!v) return;
+        const d = new Date(), list = OS.store.get(journalKey(), []);
+        list.push({ d: d.toLocaleDateString(undefined, { day: 'numeric', month: 'long' }), t: v.slice(0, 600) });
+        OS.store.set(journalKey(), list.slice(-50));
+        $('#jr-text').value = ''; S.key(); H.journal.open();
+      });
+    },
+    open(art) {
+      const a = OS.account, page = $('#jr-page');
+      const win = art && art.closest('.win'); if (win) $('.win-title > span', win).textContent = `journal · ${a.short}`;
+      $('#jr-owner').textContent = a.name;
+      page.style.setProperty('--ink', a.ink || '#1b160c');
+      const entries = a.journal ? a.journal.map(([d, t]) => [`${d} · Year 19`, t]) : OS.store.get(journalKey(), []).map(e => [e.d, e.t]);
+      page.innerHTML = entries.length ? '' : '<p class="jr-empty">Nothing written yet. The first page is yours.</p>';
+      entries.forEach(([d, t]) => {
+        const e = document.createElement('div'); e.className = 'jr-entry';
+        e.innerHTML = '<h4></h4><p></p>'; $('h4', e).textContent = d; $('p', e).textContent = t;
+        page.appendChild(e);
+      });
+      $('#jr-new').hidden = !!a.journal;
+      page.scrollTop = 0;
+    },
+  };
+
+  // ════════════════════════════════════════════════════════════════ REZNOV: the family album
+  // photographs made on Higgsfield (media/reznov); captions in his hand, Russian then English
+  const PHOTOS = [
+    ['01_anya', 'Аня. Шесть месяцев.', 'Anya. Six months.'],
+    ['02_booties', 'Вяжет пинетки. Опять.', 'Knitting booties. Again.'],
+    ['03_scan', 'Наш малыш.', 'Our little one.'],
+    ['04_dinner', 'Ужин у мамы.', 'Dinner at Mama\'s.'],
+    ['05_mama_papa', 'Мама и папа.', 'Mama and Papa.'],
+    ['06_babushka', 'Бабушка и её голуби.', 'Babushka and her pigeons.'],
+    ['07_dacha', 'Дача. Прошлое лето.', 'The dacha. Last summer.'],
+    ['08_buran', 'Буран. Хороший пёс.', 'Buran. Good dog.'],
+  ];
+  const al = { i: 0 };
+  function alShow(i) {
+    al.i = (i + PHOTOS.length) % PHOTOS.length;
+    const [id, ru, en] = PHOTOS[al.i], img = $('#al-img');
+    img.src = `media/reznov/${id}.jpg`; img.alt = en;
+    $('#al-cap').innerHTML = '<b></b><span></span>'; $('#al-cap b').textContent = ru; $('#al-cap span').textContent = en;
+    $('#al-count').textContent = `${al.i + 1} / ${PHOTOS.length}`;
+    $$('#al-thumbs button').forEach((b, k) => b.classList.toggle('on', k === al.i));
+  }
+  H.photos = {
+    init(art) {
+      const box = $('#al-thumbs');
+      PHOTOS.forEach(([id, , en], k) => {
+        const b = document.createElement('button'); b.type = 'button'; b.setAttribute('role', 'listitem'); b.setAttribute('aria-label', en);
+        b.innerHTML = `<img loading="lazy" alt="" src="media/reznov/${id}_t.jpg">`;
+        b.addEventListener('click', () => { S.click(); alShow(k); });
+        box.appendChild(b);
+      });
+      $('#al-prev').addEventListener('click', () => { S.click(); alShow(al.i - 1); });
+      $('#al-next').addEventListener('click', () => { S.click(); alShow(al.i + 1); });
+      addEventListener('keydown', e => {
+        if (OS.focused !== 'photos' || e.target.closest('input, textarea')) return;
+        if (e.key === 'ArrowLeft') alShow(al.i - 1); else if (e.key === 'ArrowRight') alShow(al.i + 1);
+      });
+      alShow(0);
+    },
+  };
+
+  // ════════════════════════════════════════════════════════════════ KIM: the Talos monitor
+  const QUESTIONS = ['What is rain?', 'How long is nine months?', 'Define: home.', 'Why do people keep photographs?', 'Is 0.42 Hz a heartbeat?',
+    'What does Seo-yeon dream about?', 'Why do humans say "probably"?', 'How far is twenty-two trillion kilometres, in heartbeats?',
+    'What is the word for missing someone who is still alive?', 'Why did Mr. Winchester throw away the chessboard?', 'Can I come too?'];
+  const tm = { stop: null, t0: performance.now(), asked: 3412, q: 0, busy: false, hist: [] };
+  function tmLog(msg, cls = '') {
+    const box = $('#tm-log'), p = document.createElement('p'); p.textContent = msg; if (cls) p.className = cls;
+    box.appendChild(p); while (box.children.length > 30) box.firstChild.remove(); box.scrollTop = box.scrollHeight;
+  }
+  function tmWave(cv, t) {
+    const d = Math.min(2, devicePixelRatio || 1), w = cv.clientWidth, h = cv.clientHeight;
+    if (!w) return;
+    if (cv.width !== Math.round(w * d)) { cv.width = Math.round(w * d); cv.height = Math.round(h * d); }
+    const g = cv.getContext('2d'); g.setTransform(d, 0, 0, d, 0, 0);
+    g.fillStyle = '#06041a'; g.fillRect(0, 0, w, h);
+    [[COL.cyan, 0.25, 7, 1.0], [COL.magenta, 0.5, 13, 0.6], ['#24ff4c', 0.75, 3, 1.4]].forEach(([c, y0, f, a]) => {
+      g.beginPath();
+      for (let x = 0; x <= w; x += 2) {
+        const u = x / w * 12 + t * f * 0.3;
+        const y = h * y0 + Math.sin(u * 1.7) * 6 * a + Math.sin(u * 4.3 + t) * 4 * a + (Math.sin(u * 23.1 + t * 7) * Math.sin(u * 0.7)) * 5 * a;
+        x ? g.lineTo(x, y) : g.moveTo(x, y);
+      }
+      g.strokeStyle = c; g.lineWidth = 1.6; g.shadowColor = c; g.shadowBlur = 6; g.stroke(); g.shadowBlur = 0;
+    });
+  }
+  H.talosmon = {
+    init() {
+      window.drawTalosFace($('#tm-face'));
+      $('#tm-diag').addEventListener('click', async () => {
+        if (tm.busy) return; tm.busy = true; S.click();
+        for (const s of ['MEMORY ............ OK', 'REASONING ......... OK', 'LANGUAGE .......... OK', 'CURIOSITY ......... ELEVATED', 'SAFETY LIMITS ..... OK']) {
+          await new Promise(r => setTimeout(r, 450)); tmLog('DIAG  ' + s, s.includes('ELEVATED') ? 'warn' : 'dim'); S.blip(1600);
+        }
+        await new Promise(r => setTimeout(r, 500)); tmLog('ALL CHECKS PASSED. NOTHING UNUSUAL.'); S.ding(); tm.busy = false;
+      });
+      $('#tm-pause').addEventListener('click', async () => {
+        if (tm.busy) return; tm.busy = true; S.click();
+        tmLog(`PAUSE REQUESTED BY ${OS.account.name.toUpperCase()}`, 'dim');
+        await new Promise(r => setTimeout(r, 1300));
+        tmLog(`TALOS: Is something wrong, ${OS.account.short}?`, 'talos'); S.blip(520);
+        await new Promise(r => setTimeout(r, 1400));
+        tmLog('PAUSE REQUEST LOGGED.', 'dim'); tm.busy = false;
+      });
+    },
+    open() {
+      if (tm.stop) tm.stop();
+      if (!$('#tm-log').children.length) { tmLog(`SESSION ${OS.account.name.toUpperCase()} · TALOS 1.0.4`, 'dim'); tmLog('Q: ' + QUESTIONS[0]); }
+      let tick = 0;
+      tm.stop = every(80, () => {
+        const t = (performance.now() - tm.t0) / 1000, up = 214 * 86400 + 22000 + t;
+        const hms = [Math.floor(up / 3600) % 24, Math.floor(up / 60) % 60, Math.floor(up) % 60].map(n => String(n).padStart(2, '0')).join(':');
+        if (++tick % 50 === 0) { tm.asked++; tm.q = (tm.q + 1) % QUESTIONS.length; tmLog('Q: ' + QUESTIONS[tm.q]); }
+        $('#tm-stats').innerHTML = [['UPTIME', `${Math.floor(up / 86400)}d ${hms}`], ['COGNITIVE LOAD', (34 + 4 * Math.sin(t * 0.6) + Math.random()).toFixed(1) + '%'],
+          ['ACTIVE THREADS', (4096 + Math.round(40 * Math.sin(t))).toLocaleString()], ['QUESTIONS TODAY', tm.asked.toLocaleString()],
+          ['MEMORY', (11.42 + t * 0.0004).toFixed(4) + ' PB'], ['MOOD', 'CALM']].map(([k, v]) => `<li><span>${k}</span><b>${v}</b></li>`).join('');
+        tmWave($('#tm-wave'), t);
+      });
+    },
+    hide() { if (tm.stop) { tm.stop(); tm.stop = null; } },
+    close() { H.talosmon.hide(); },
+    reset() { H.talosmon.hide(); $('#tm-log').innerHTML = ''; },
+  };
 })();

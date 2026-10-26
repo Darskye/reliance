@@ -4,16 +4,15 @@
 window.RELIANCE_CONFIG = {
 
   // ---------------------------------------------------------------- crowdfunding
-  gofundme: '',            // e.g. 'https://www.gofundme.com/f/...'
-  indiegogo: '',           // e.g. 'https://www.indiegogo.com/projects/...'
+  gofundme: 'https://www.gofundme.com/f/backing-our-scifi-feature-film',
 
   // ---------------------------------------------------------------- Instagram pages (ISEA-NET app)
   // handle: shown on the card, e.g. '@reliancefilm'.  url: the full Instagram link.
   instagram: [
-    { name: 'RELIANCE', role: 'Official film account: news, casting calls, behind the scenes', handle: '', url: '', icon: 'star' },
-    { name: 'ISEA', role: 'In-world broadcasts from the International Space Exploration Agency', handle: '', url: '', icon: 'globe' },
-    { name: 'Darian Lalla', role: 'Co-writer', handle: '', url: '', icon: 'station' },
-    { name: 'Morgan Messina', role: 'Co-writer · Dr. Catherine Gray', handle: '', url: '', icon: 'station' },
+    { name: 'RELIANCE', role: 'Official film account: news, casting calls, behind the scenes', handle: '@reliance_film', url: 'https://www.instagram.com/reliance_film/', icon: 'star' },
+    { name: 'Jackson Hartman', role: 'Director', handle: '@jacksonlhartman', url: 'https://www.instagram.com/jacksonlhartman/', icon: 'tape' },
+    { name: 'Darian Lalla', role: 'Co-writer', handle: '@darskye', url: 'https://www.instagram.com/darskye/', icon: 'station' },
+    { name: 'Morgan Messina', role: 'Co-writer · Dr. Catherine Gray', handle: '@_morgan_messina_', url: 'https://www.instagram.com/_morgan_messina_/', icon: 'station' },
   ],
 
   // ---------------------------------------------------------------- forms

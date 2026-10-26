@@ -1,5 +1,7 @@
 # RELIANCE: the website
 
+RELIANCE is an independent science-fiction film directed by Jackson Hartman, written by Darian Lalla & Morgan Messina.
+
 The film's site is an ISEA workstation running **STARFRAME 95**, the same made-up operating system as the `talos` promo, on a curved CRT tube. Visitors press power, watch it boot, pick an account, and land on a desktop where every part of the site is a program.
 
 ## The accounts
@@ -8,10 +10,13 @@ The log-on screen lists the crew, who are "still logged on", so you just click o
 
 | Account | Desktop | Their own programs |
 |---|---|---|
-| **Cmdr. Roman Reznov** | Never touched since setup: the default teal background and grey-blue title bars. "You last logged on 214 days ago." | Mission Orders, the STARFRAME tour. Empty Disposal. |
+| **Cmdr. Roman Reznov** | Never touched since setup: the default teal background and grey-blue title bars. "You last logged on 214 days ago." | **Family**: his photo album (his pregnant wife Anya, his parents, his babushka, the dacha, the dog Buran, the baby's scan), captioned in his hand in Russian and English. Mission Orders, the STARFRAME tour. Empty Disposal. |
 | **Dr. Catherine Gray** | Lab green, with the Ichor specimen turning slowly as the wallpaper. | **Ichor Lab**: the specimen in 3D, glowing veins, four imaging modes (visible, UV, thermal, scan), live readouts, a deep scan, and an observation log. **Research Log**: her notes, plus anything you log in the lab. TALOS.EXE. |
 | **John Winchester** | Neon: a grid racing toward a striped sun. | **Engine Diag** (live drive, reactor and pod gauges, a CPU graph, a log, and a Tune-up button), **Mixtape** (the promo soundtracks on a cassette deck with a level meter), **Debris Field** (Minesweeper), **Cube Crunch** (Snake, eating Cube Meals), and his joke file. |
+| **Kim Seo-yeon** | Software engineer on the Talos program. Violet and cyan, with a network of signals and Talos's face faintly behind it. | **Talos Monitor** (uptime, load, neural activity, the questions Talos asked today, diagnostics, a Pause button that doesn't quite pause), TALOS.EXE, the 1.0.4 patch notes. |
 | **New account / Visitor** | The starfield with the Helios turning. | The welcome window. |
+
+Every account has a **Journal**. The crew's are written in their own ink on lined paper (the entries are in `js/desktops.js`). A visitor or new account gets a blank one to write in, saved on that device.
 
 Every account also has the film's own programs (below), so a visitor can always reach the casting form and the crowdfunding links. Whatever windows a crew account has open when you switch user are open again next time. Accounts, their pictures, wallpapers, programs and balloon messages are set in **`js/desktops.js`**.
 
@@ -24,19 +29,19 @@ Every account also has the film's own programs (below), so a visitor can always 
 | **Tape Vault** | The archive: every promo, as tapes you load into a little TV. |
 | **Crew Dossier** | The audition and crew sign-up form. When it's sent, it prints the person an ISEA ID badge (with their own photo in green phosphor, if they add one) that they can save and post. |
 | **ISEA-NET** | The Instagram pages and a mailing-list sign-up. |
-| **Fuel Drive** | GoFundMe and Indiegogo, plus a mailing-list sign-up for the launch. |
+| **Fuel Drive** | The GoFundMe campaign, plus a mailing-list sign-up. |
 | **TALOS.EXE** | A terminal where you can talk to Talos. Type HELP. |
 | **Disposal** | The recycle bin. Different in every account. |
 
-Talos greets each account differently. Making a new account called Gray, Reznov or Winchester takes you to theirs.
+Talos greets each account differently. Making a new account called Gray, Reznov, Winchester or Kim takes you to theirs.
 
 ## The curved screen
 
 The whole site sits on a CRT tube: black bezel, big rounded corners, edges that fall into shadow, a soft window reflection, and scanlines. On a computer in Chrome or Edge the picture also really bends like curved glass. That's an SVG filter (`#crt-warp` in `index.html`, built in `Warp` in `js/os.js`). It bends the boot screens, the log-on backdrop, the wallpapers and the scanlines, but not the windows and icons, so clicks always land where they look and small text stays sharp. Phones, Safari and Firefox get the tube without the bend. The START menu's "CRT effect" switches all of it off.
 
-## Put in the real links
+## The links
 
-Everything you'll change lives in **`js/config.js`**: the GoFundMe and Indiegogo addresses, the Instagram pages (name, handle, link), the form addresses, the contact email, the press kit link, and the list of tapes. While a link is empty (`''`), the site shows "LINK PENDING" or "Launching soon" and clicking it says "coming soon", so it's safe to go live before you have them all.
+Everything you'll change lives in **`js/config.js`**: the GoFundMe address, the Instagram pages (name, handle, link), the form addresses, the contact email, the press kit link, and the list of tapes. The GoFundMe and the four Instagram pages are filled in. Anything still empty (`''`) shows "LINK PENDING", and clicking it says "coming soon".
 
 ### Making the forms actually send
 
@@ -101,6 +106,7 @@ js/crew-apps.js   the crew's programs: Ichor Lab, Research Log, tour, Engine Dia
 js/games.js       Debris Field and Cube Crunch
 js/ichor.js       the Ichor specimen in 3D (plain WebGL): the rock's shape, glowing veins, bloom, dust
 media/music       the promo soundtracks, for the Mixtape
+media/reznov      Reznov's family photos (made on Higgsfield; the full-size originals are in tools/reznov_src, not uploaded)
 js/lib/           shared with the promos: kit.js, emblem.js (ISEA emblem), starframe.js (logo, icons,
                   Helios wireframe), ship_lines.js (the ship), gray_photo.js, talos_face.js
 media/video       web copies of the spots     media/posters  one still from each

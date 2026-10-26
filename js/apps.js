@@ -63,12 +63,25 @@
 
   const H = window.AppHooks;
 
+  // Talos's face (the ASCII portrait from the TALOS.EXE promo) drawn into a canvas, trimmed to the
+  // face itself so it can be centred anywhere: the crew card, Kim's monitor, her wallpaper
+  window.drawTalosFace = function (cv, col = '#3dff6a') {
+    const F = window.TALOS_FACE || [], rows = F.filter(r => r.trim());
+    if (!rows.length) return;
+    const left = Math.min(...rows.map(r => r.search(/\S/))), right = Math.max(...rows.map(r => r.trimEnd().length));
+    const cw = 7.2, ch = 12;
+    cv.width = Math.ceil((right - left) * cw + 12); cv.height = Math.ceil(rows.length * ch + 12);
+    const g = cv.getContext('2d');
+    g.font = '12px "Courier New", monospace'; g.textBaseline = 'top'; g.fillStyle = col; g.shadowColor = col; g.shadowBlur = 4;
+    rows.forEach((r, k) => { for (let i = left; i < right; i++) if (r[i] && r[i] !== ' ') g.fillText(r[i], 6 + (i - left) * cw, 6 + k * ch); });
+  };
+
   // ════════════════════════════════════════════════════════════════ MISSION BRIEF
   H.brief = {
     init(art) {
       tabs(art, tab => { $('#brief-address').textContent = 'isea://reliance/' + tab; $('.page', art).scrollTop = 0; });
       const img = $('#gray-photo'); if (window.GRAY_PHOTO) img.src = window.GRAY_PHOTO;
-      if (window.TALOS_FACE) $('#mini-face').textContent = window.TALOS_FACE.join('\n');
+      window.drawTalosFace($('#mini-face'));
     },
   };
 
@@ -329,7 +342,7 @@
         if (!f.name.value.trim()) need.push('name');
         if (!validEmail(f.email.value.trim())) need.push('a valid email');
         if (!f.location.value.trim()) need.push('city / region');
-        if (!f.adult.checked || !f.consent.checked) need.push('the two checkboxes');
+        if (!f.consent.checked) need.push('the checkbox');
         if (need.length) { S.error(); err.textContent = 'Missing: ' + need.join(', ') + '.'; return; }
         err.textContent = '';
         const roles = $$('input[name="roles"]:checked', form).map(i => i.value);
@@ -409,19 +422,21 @@
     if (q === 'clear' || q === 'cls') return 'clear';
     if (has('exit', 'quit', 'bye', 'goodbye', 'logout')) return [[`Goodbye, ${name()}.`], 'exit'];
     if (has('hello', 'hi', 'hey', 'greetings')) return [[`Hello, ${name()}.`]];
-    if (has('about', 'reliance', 'film', 'movie')) return [['RELIANCE. An independent science-fiction film by Darian Lalla and Morgan Messina.'], ['Opening the mission brief.', 'dim'], { open: 'brief' }];
+    if (has('about', 'reliance', 'film', 'movie')) return [['RELIANCE. An independent science-fiction film directed by Jackson Hartman, written by Darian Lalla and Morgan Messina.'], ['Opening the mission brief.', 'dim'], { open: 'brief' }];
     if (has('crew', 'reznov', 'gray', 'grey', 'winchester')) return [['Commander Roman Reznov. Science Officer Dr. Catherine Gray. Flight Engineer John Winchester.'], ['And me.']];
     if (has('helios', 'ship', 'vessel')) return [['Deep space survey vessel, hull RV-2719. I know every bolt.'], { open: 'helios' }];
     if (has('ichor')) return [['Ichor is a theorized energy source.'], ['Theorized.'], ['I would like to see it too.']];
     if (has('dimming', 'ration', 'bureau', 'power')) return [['Light. Water. Power. Food. Rationed.'], ['Every watt counts.']];
     if (has('watch', 'archive', 'tape', 'video', 'videos', 'trailer')) return [['Loading the tape vault.'], { open: 'archive' }];
     if (has('audition', 'join', 'dossier', 'cast', 'casting', 'apply', 'crew dossier')) return [['The agency is recruiting. I will process your file personally.'], { open: 'dossier' }];
-    if (has('fund', 'donate', 'gofundme', 'indiegogo', 'money', 'support')) return [['Every watt counts.'], { open: 'fund' }];
+    if (has('fund', 'donate', 'gofundme', 'money', 'support')) return [['Every watt counts.'], ['Opening the Fuel Drive.', 'dim'], { open: 'fund' }];
     if (has('instagram', 'social', 'follow', 'insta')) return [['Opening ISEA-NET.'], { open: 'comms' }];
     if (has('face', 'look', 'see you', 'show yourself')) return [{ face: true }];
     if (q.includes('ilovedarian') || has('password')) return [['Dr. Gray changed her password.'], ['I helped.']];
     if (q.includes('pod bay')) return [[`Wrong film, ${name()}.`]];
     if (has('who are you', 'what are you', 'talos')) return [['I am Talos. I am here to help.']];
+    if (has('journal', 'diary')) return [['I do not keep a journal.'], ['I keep everything.']];
+    if (has('kim', 'seo yeon', 'seoyeon')) return [['Seo-yeon wrote most of me.'], ['I am very grateful to her.']];
     if (has('alive', 'conscious', 'real')) return [['Define alive.']];
     if (has('how are you')) return [['Operating within normal parameters.']];
     if (has('brain', 'box', 'tank')) return [['That information is restricted.']];

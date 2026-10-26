@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>RELIANCE · ISEA Workstation</title>
-<meta name="description" content="RELIANCE, an independent science-fiction film by Darian Lalla and Morgan Messina. Log on to an ISEA STARFRAME 95 workstation: explore the Helios, watch recovered broadcasts, audition for the crew and help fund the mission.">
+<meta name="description" content="RELIANCE, an independent science-fiction film directed by Jackson Hartman, written by Darian Lalla and Morgan Messina. Log on to an ISEA STARFRAME 95 workstation: explore the Helios, watch recovered broadcasts, audition for the crew and help fund the mission.">
 <meta name="theme-color" content="#0a1460">
 <meta property="og:type" content="website">
 <meta property="og:title" content="RELIANCE · ISEA Workstation">
@@ -15,7 +15,7 @@
 <link rel="icon" href="media/favicon.svg" type="image/svg+xml">
 <link rel="preload" href="fonts/PixelifySans.ttf" as="font" type="font/ttf" crossorigin>
 <link rel="preload" href="fonts/VT323.ttf" as="font" type="font/ttf" crossorigin>
-<link rel="stylesheet" href="css/os.css?v=5">
+<link rel="stylesheet" href="css/os.css?v=6">
 </head>
 <body class="crt-on">
 
@@ -30,7 +30,7 @@
 <noscript>
   <div class="nojs">
     <h1>RELIANCE</h1>
-    <p>An independent science-fiction film written by Darian Lalla &amp; Morgan Messina.</p>
+    <p>An independent science-fiction film directed by Jackson Hartman, written by Darian Lalla &amp; Morgan Messina.</p>
     <p>This site is an ISEA workstation and needs JavaScript switched on. Everything is also listed below.</p>
   </div>
 </noscript>
@@ -42,7 +42,7 @@
     <div class="power-inner">
       <canvas id="power-emblem" class="emblem-canvas" width="260" height="260" aria-hidden="true"></canvas>
       <h1 class="power-title">RELIANCE</h1>
-      <p class="power-sub">An independent science-fiction film<br>written by Darian Lalla &amp; Morgan Messina</p>
+      <p class="power-sub">An independent science-fiction film<br>directed by Jackson Hartman<br>written by Darian Lalla &amp; Morgan Messina</p>
       <button id="power-btn" class="power-btn" type="button">
         <span class="power-ring" aria-hidden="true"></span>
         <span class="power-label">Power on</span>
@@ -169,12 +169,12 @@
   <article class="app" data-app="welcome">
     <div class="doc">
       <h2 class="doc-h">Welcome to STARFRAME 95, <span class="user-name">Guest</span>.</h2>
-      <p><strong>RELIANCE</strong> is an independent science-fiction film written by Darian Lalla &amp; Morgan Messina. <span id="welcome-intro">This workstation holds everything the agency is cleared to tell you.</span></p>
+      <p><strong>RELIANCE</strong> is an independent science-fiction film directed by Jackson Hartman and written by Darian Lalla &amp; Morgan Messina. <span id="welcome-intro">This workstation holds everything the agency is cleared to tell you.</span></p>
       <div class="launchers" id="launchers"></div>
       <div class="latest">
         <img data-icon="tape" alt="">
-        <p><b>Latest transmission</b><br>New tape recovered from the archive: <em>The Midnight Hour with Dale Harper</em>.</p>
-        <button class="btn" type="button" data-open="archive/midnight">Play tape</button>
+        <p><b>Latest transmission</b><br>The Fuel Drive is live. Help launch RELIANCE on GoFundMe.</p>
+        <button class="btn gold" type="button" data-open="fund">Fuel the mission</button>
       </div>
       <p class="tip">Tip: drag windows by their blue bars. Everything else is under <b>START</b>.</p>
     </div>
@@ -219,14 +219,14 @@
           <div class="file"><h4>The ISEA</h4><p>The International Space Exploration Agency, searching the stars for a new source of power. Motto: moving forward, together.</p></div>
           <div class="file"><h4>The Helios</h4><p>Hull RV-2719. A deep space survey vessel with a crew of three, hyperspace capable. <button class="link" type="button" data-open="helios">Open the ship file ▶</button></p></div>
           <div class="file"><h4>Ichor</h4><p>A theorized energy source. If it is real, it could give humanity a fresh start on a new world.</p></div>
-          <div class="file restricted"><h4>Talos</h4><p>The agency's thinking machine. <span class="redact">FILE RESTRICTED</span> <button class="link" type="button" data-open="talos">Open TALOS.EXE ▶</button></p></div>
+          <div class="file restricted"><h4>Talos</h4><p>The agency's thinking machine, built by the Talos Program under software engineer Kim Seo-yeon. <span class="redact">FILE RESTRICTED</span> <button class="link" type="button" data-open="talos">Open TALOS.EXE ▶</button></p></div>
           <div class="file"><h4>Kotoshima Technologies</h4><p>Makers of the CyberCuff, the wrist computer worn by every ISEA crew member.</p></div>
           <div class="file"><h4>Cube Meal</h4><p>Four meals in one cube, and proud sponsor of the ISEA. Be there and be square!</p></div>
         </div>
       </section>
 
       <section class="tab-panel" data-panel="crew">
-        <h3 class="sec-h">Crew manifest · Helios RV-2719</h3>
+        <h3 class="sec-h">Crew manifest · Helios RV-2719 and ground team</h3>
         <div class="crew">
           <div class="crew-card"><div class="crew-photo nophoto"><span>NO IMAGE<br>ON FILE</span></div>
             <div><p class="rank">Commander</p><h4>Roman Reznov</h4><p class="quote">“The steadiest hand in the agency.” — Dr. Gray</p><p class="actor">Cast: <span class="pending">to be announced</span></p></div></div>
@@ -234,7 +234,9 @@
             <div><p class="rank">Science Officer</p><h4>Dr. Catherine Gray</h4><p class="quote">“I've always felt more at home among the stars than anywhere down here.”</p><p class="actor">Played by <b>Morgan Messina</b></p></div></div>
           <div class="crew-card"><div class="crew-photo nophoto"><span>NO IMAGE<br>ON FILE</span></div>
             <div><p class="rank">Flight Engineer</p><h4>John Winchester</h4><p class="quote">“...keeps the rest of us entertained.” — Dr. Gray</p><p class="actor">Cast: <span class="pending">to be announced</span></p></div></div>
-          <div class="crew-card talos-card"><div class="crew-photo face"><pre id="mini-face" aria-hidden="true"></pre></div>
+          <div class="crew-card"><div class="crew-photo nophoto"><span>NO IMAGE<br>ON FILE</span></div>
+            <div><p class="rank">Software Engineer · Talos Program</p><h4>Kim Seo-yeon</h4><p class="quote">“He finishes my sentences now. Mostly the code ones.”</p><p class="actor">Cast: <span class="pending">to be announced</span></p></div></div>
+          <div class="crew-card talos-card"><div class="crew-photo face"><canvas id="mini-face" aria-hidden="true"></canvas></div>
             <div><p class="rank">Agency system</p><h4>Talos</h4><p class="quote">“Hello.”</p><p class="actor"><span class="redact">CLASSIFIED</span></p></div></div>
         </div>
       </section>
@@ -242,6 +244,7 @@
       <section class="tab-panel" data-panel="production">
         <h3 class="sec-h">Behind the camera</h3>
         <dl class="credits">
+          <dt>Directed by</dt><dd>Jackson Hartman</dd>
           <dt>Written by</dt><dd>Darian Lalla &amp; Morgan Messina</dd>
           <dt>Status</dt><dd>Pre-production: casting, crewing up, crowdfunding</dd>
           <dt>Genre</dt><dd>Science fiction</dd>
@@ -250,7 +253,7 @@
         <ol class="log">
           <li><time datetime="2026-10-24">2026-10-24</time><b>Workstation online.</b> The ISEA archive is open to the public.</li>
           <li><time>OPEN</time><b>Casting call.</b> Actors and crew can file a <button class="link" type="button" data-open="dossier">Crew Dossier</button>.</li>
-          <li><time>SOON</time><b>Crowdfunding.</b> Campaigns launching on GoFundMe and Indiegogo. <button class="link" type="button" data-open="fund">Fuel Drive ▶</button></li>
+          <li><time>LIVE</time><b>Crowdfunding.</b> Our GoFundMe is live. <button class="link" type="button" data-open="fund">Fuel Drive ▶</button></li>
         </ol>
       </section>
 
@@ -378,7 +381,6 @@
           </div>
         </fieldset>
         <div class="checks">
-          <label class="check"><input type="checkbox" name="adult" value="yes" required><span>I am 18 or older (or applying with a parent or guardian's permission). *</span></label>
           <label class="check"><input type="checkbox" name="consent" value="yes" required><span>The production may contact me about RELIANCE. *</span></label>
         </div>
         <input type="text" name="_gotcha" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
@@ -423,14 +425,13 @@
     <div class="doc fund">
       <p class="kicker">HELIOS FUEL DRIVE</p>
       <h2 class="doc-h">Fuel the mission.</h2>
-      <p>RELIANCE is an independent film. Your support builds the Helios, suits up the crew and gets the camera rolling.</p>
+      <p>RELIANCE is an independent film, and our GoFundMe is live. Your support builds the Helios, suits up the crew and gets the camera rolling. Sharing the link helps too.</p>
       <div class="gauge" aria-label="Fuel gauge: awaiting ignition">
         <div class="gauge-cells"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
-        <p><span>FUEL LEVEL</span><b class="blink">AWAITING IGNITION</b></p>
+        <p><span>FUEL LEVEL</span><b class="blink">IGNITION · CAMPAIGN LIVE</b></p>
       </div>
       <div class="fund-btns">
-        <a class="fund-btn gfm" data-link="gofundme" href="#"><b>GoFundMe</b><small class="fund-state">Launching soon</small></a>
-        <a class="fund-btn igg" data-link="indiegogo" href="#"><b>Indiegogo</b><small class="fund-state">Launching soon</small></a>
+        <a class="fund-btn gfm" data-link="gofundme" href="#"><b>GoFundMe</b><small class="fund-state">Donate now ▶</small></a>
       </div>
       <h4 class="sec-h">What your watts power</h4>
       <ul class="powers">
@@ -440,8 +441,8 @@
         <li><img data-icon="cube" alt=""><span><b>Crew meals</b> (real ones, not Cube Meals)</span></li>
       </ul>
       <div class="mailbox">
-        <h4>Get the launch transmission</h4>
-        <p class="muted small">We will email you the moment the campaigns go live.</p>
+        <h4>Get transmissions</h4>
+        <p class="muted small">Campaign milestones, casting calls and first footage. One email when it matters.</p>
         <form class="mail-form" data-list="fund">
           <input class="field" type="email" name="email" placeholder="your@email" required aria-label="Email address" autocomplete="email">
           <input type="text" name="_gotcha" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
@@ -646,20 +647,80 @@ Fine. I will.</pre></div>
 
 [file continues for 408 MB]</pre></div>
   </article>
+  <!-- ══════════════ everyone: the journal ══════════════ -->
+  <article class="app" data-app="journal">
+    <div class="journal">
+      <div class="jr-cover"><img data-icon="book" alt=""><div><p class="kicker">PERSONAL JOURNAL</p><h2 class="doc-h" id="jr-owner">Journal</h2></div></div>
+      <div class="jr-page" id="jr-page"></div>
+      <form class="jr-new" id="jr-new" hidden>
+        <label for="jr-text">Today's entry</label>
+        <textarea id="jr-text" class="field" rows="3" maxlength="600" placeholder="Dear journal..."></textarea>
+        <button class="btn" type="submit">Write it down</button>
+        <p class="muted small">Your journal is saved on this device only.</p>
+      </form>
+    </div>
+  </article>
+
+  <!-- ══════════════ Reznov: the family album ══════════════ -->
+  <article class="app" data-app="photos">
+    <div class="album">
+      <figure class="al-view">
+        <div class="al-print"><img id="al-img" alt=""><figcaption id="al-cap"></figcaption></div>
+        <div class="al-nav"><button class="btn" type="button" id="al-prev" aria-label="Previous photo">◀</button><span id="al-count">1 / 8</span><button class="btn" type="button" id="al-next" aria-label="Next photo">▶</button></div>
+      </figure>
+      <div class="al-thumbs" id="al-thumbs" role="list" aria-label="Photos"></div>
+    </div>
+  </article>
+
+  <!-- ══════════════ Kim ══════════════ -->
+  <article class="app" data-app="talosmon">
+    <div class="tmon">
+      <div class="tm-top">
+        <div class="tm-face"><canvas id="tm-face" aria-hidden="true"></canvas><span>TALOS · BUILD 1.0.4</span></div>
+        <ul class="tm-stats" id="tm-stats"></ul>
+      </div>
+      <section class="dpanel tm-wave-panel"><h4>NEURAL ACTIVITY</h4><canvas id="tm-wave" class="tm-wave"></canvas></section>
+      <section class="dpanel"><h4>QUESTIONS TALOS ASKED TODAY</h4><div class="tm-log" id="tm-log" aria-live="polite"></div></section>
+      <div class="diag-btns"><button class="btn" type="button" id="tm-diag">Run diagnostics</button><button class="btn" type="button" id="tm-pause">Pause Talos</button></div>
+    </div>
+  </article>
+  <article class="app" data-app="patch">
+    <div class="notepad"><div class="np-menu" aria-hidden="true"><span>File</span><span>Edit</span><span>Search</span><span>Help</span></div>
+<pre class="np-text">TALOS 1.0.4 · PATCH NOTES
+Engineer: Kim Seo-yeon · Talos Program
+
+NEW
+- Conversational warmth improved (+12%).
+- Talos now remembers the names of everyone he
+  has spoken to. (He did already. Now it's on purpose.)
+
+FIXED
+- Talos occasionally answered questions before they
+  were asked.
+- Chess difficulty can no longer exceed "humiliating".
+  (Requested by J. Winchester.)
+- Talos no longer reminds staff to eat more than four
+  times a shift.
+
+KNOWN ISSUES
+- Talos asks "why" more often than expected.
+  Investigating.
+- Talos asks what dreams are. Not a bug. Probably.</pre></div>
+  </article>
 </div>
 
-<script src="js/config.js?v=5"></script>
+<script src="js/config.js?v=6"></script>
 <script src="js/lib/kit.js"></script>
 <script src="js/lib/emblem.js"></script>
 <script src="js/lib/starframe.js"></script>
 <script src="js/lib/ship_lines.js"></script>
 <script src="js/lib/gray_photo.js"></script>
 <script src="js/lib/talos_face.js"></script>
-<script src="js/desktops.js?v=5"></script>
-<script src="js/ichor.js?v=5"></script>
-<script src="js/os.js?v=5"></script>
-<script src="js/apps.js?v=5"></script>
-<script src="js/crew-apps.js?v=5"></script>
-<script src="js/games.js?v=5"></script>
+<script src="js/desktops.js?v=6"></script>
+<script src="js/ichor.js?v=6"></script>
+<script src="js/os.js?v=6"></script>
+<script src="js/apps.js?v=6"></script>
+<script src="js/crew-apps.js?v=6"></script>
+<script src="js/games.js?v=6"></script>
 </body>
 </html>

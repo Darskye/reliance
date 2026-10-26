@@ -72,6 +72,18 @@
       '................', '................', '................', '................'],
     visitor: person,
     newuser: plus.map(r => r.join('')),
+    book: [
+      '................', '..kkkkkkkkkkk...', '..krrrrrrrrrkk..', '..krrrrrrrrrkwk.', '..krrkkkkkrrkwk.', '..krrkwwwkrrkwk.',
+      '..krrkkkkkrrkwk.', '..krrrrrrrrrkwk.', '..krrrrrrrrrkwk.', '..krrrrrrgrrkwk.', '..krrrrrrgrrkwk.', '..krrrrrrgrrkwk.',
+      '..krrrrrrrrrkwk.', '..kkkkkkkkkkkwk.', '...kwwwwwwwwwwk.', '...kkkkkkkkkkkk.'],
+    photo: [
+      '................', '.kkkkkkkkkkkkkk.', '.kwwwwwwwwwwwwk.', '.kwBBBBBBBBBBwk.', '.kwBBBBBBBggBwk.', '.kwBBBBBBBggBwk.',
+      '.kwBBBkBBBBBBwk.', '.kwBBkGkBBBBBwk.', '.kwBkGGGkBkBBwk.', '.kwkGGGGGkGkBwk.', '.kwGGGGGGGGGkwk.', '.kwGGGGGGGGGGwk.',
+      '.kwwwwwwwwwwwwk.', '.kwwwwwwwwwwwwk.', '.kkkkkkkkkkkkkk.', '................'],
+    jar: sym(['........', '...kkkkk', '...kdddd', '..kwwwww', '.kwttttt', '.kwttrrr', '.kwtrrrr', '.kwtrror',
+      '.kwtrrrr', '.kwttrrr', '.kwttttt', '.kwttttt', '.kwwwwww', '..kkkkkk', '........', '........']),
+    coder: sym(['........', '....kkkk', '...kkkkk', '..kkkkkk', '..kkcccc', '..kkcccc', '..kbbbcb', '..kkcccc',
+      '..kkcccc', '..kkkccr', '..kk.kcc', '....tttt', '...ttttt', '..tttttt', '..tttttt', '........']),
   });
   const iconCache = {};
   function icon(name) {
@@ -366,6 +378,7 @@
     if (/gr[ae]y|catherine/i.test(name)) { if (pass && pass !== 'ilovedarian') toast("That's not Dr. Gray's password. Logging you on anyway."); return resume(ACCOUNTS.gray); }
     if (/reznov/i.test(name)) return resume(ACCOUNTS.reznov);
     if (/winchester/i.test(name)) return resume(ACCOUNTS.winchester);
+    if (/seo-?yeon|^kim/i.test(name)) return resume(ACCOUNTS.kim);
     if (/^talos$/i.test(name)) { toast('User TALOS is already logged on.'); return; }
     if (pass === 'ilovedarian') toast("That's Dr. Gray's password. We'll pretend we didn't see that.");
     const list = store.get('accounts', []);
@@ -681,9 +694,10 @@
   //   basic:  Reznov never changed the default
   //   lab:    Gray: the Ichor specimen, live, in 3D
   //   arcade: Winchester: a neon grid racing toward a striped sun
+  //   neural: Kim: a network of nodes passing signals, with Talos's face faintly behind it
   const wall = (() => {
     const cv = $('#sky'), gcv = $('#wall-gl');
-    let theme = 'stars', raf = 0, running = false, last = 0, stars = null, drawn = '', rock = null;
+    let theme = 'stars', raf = 0, running = false, last = 0, stars = null, drawn = '', rock = null, net = null, face = null;
     const dpr = () => Math.min(2, devicePixelRatio || 1);
     function covered() { return Object.values(wins).some(w => !w.el.classList.contains('min') && (isMobile() || w.el.classList.contains('max'))); }
     function starfield(g, w, h, t, top = h) {
@@ -730,16 +744,43 @@
       g.strokeStyle = COL.magenta; g.globalAlpha = 0.25; g.lineWidth = 6; g.stroke(path);
       g.globalAlpha = 0.9; g.lineWidth = 1.6; g.stroke(path); g.globalAlpha = 1;
     }
+    function drawNeural(g, w, h, t) {
+      const bg = g.createLinearGradient(0, 0, w, h); bg.addColorStop(0, '#07051a'); bg.addColorStop(1, '#140a3e');
+      g.fillStyle = bg; g.fillRect(0, 0, w, h);
+      if (!face && window.drawTalosFace) { face = document.createElement('canvas'); window.drawTalosFace(face, '#7a5cff'); }
+      if (face) {
+        const fh = h * 0.8, fw = fh * face.width / face.height, fx = isMobile() ? (w - fw) / 2 : w * 0.62 - fw / 2;
+        g.globalAlpha = 0.13 + 0.03 * Math.sin(t * 0.7); g.drawImage(face, fx, h * 0.08, fw, fh); g.globalAlpha = 1;
+      }
+      if (!net) {
+        const n = Math.min(90, Math.round(w * h / 15000)), nodes = Array.from({ length: n }, () => ({ x: Math.random(), y: Math.random(), p: Math.random() * 6.28 }));
+        const edges = [];
+        nodes.forEach((a, i) => nodes.map((b, j) => [j, (a.x - b.x) ** 2 + (a.y - b.y) ** 2]).filter(([j]) => j > i).sort((u, v) => u[1] - v[1]).slice(0, 2)
+          .forEach(([j]) => edges.push([i, j, Math.random(), 0.15 + Math.random() * 0.3])));
+        net = { nodes, edges };
+      }
+      const pos = net.nodes.map(nd => [(nd.x + 0.012 * Math.sin(t * 0.3 + nd.p)) * w, (nd.y + 0.012 * Math.cos(t * 0.25 + nd.p)) * h]);
+      g.lineWidth = 1; g.strokeStyle = 'rgba(24,228,255,0.16)'; g.beginPath();
+      for (const [i, j] of net.edges) { g.moveTo(...pos[i]); g.lineTo(...pos[j]); }
+      g.stroke();
+      for (const [i, j, ph, sp] of net.edges) {            // a signal running along each connection
+        const q = (t * sp + ph) % 1, x = pos[i][0] + (pos[j][0] - pos[i][0]) * q, y = pos[i][1] + (pos[j][1] - pos[i][1]) * q;
+        g.fillStyle = q < 0.5 ? COL.cyan : COL.magenta; g.globalAlpha = Math.sin(q * Math.PI); g.fillRect(x - 1.5, y - 1.5, 3, 3);
+      }
+      g.globalAlpha = 1;
+      net.nodes.forEach((nd, i) => { const on = 0.5 + 0.5 * Math.sin(t * 2 + nd.p * 3); g.fillStyle = on > 0.92 ? COL.magenta : '#9fb4ff'; g.globalAlpha = 0.5 + 0.5 * on; g.fillRect(pos[i][0] - 2, pos[i][1] - 2, 4, 4); });
+      g.globalAlpha = 1;
+    }
     function frame(now) {
       raf = requestAnimationFrame(frame);
       if (document.hidden || now - last < 33) return; last = now;
       const d = dpr(), w = cv.clientWidth, h = cv.clientHeight;
       if (!w || !h) return;
-      if (cv.width !== Math.round(w * d) || cv.height !== Math.round(h * d)) { cv.width = Math.round(w * d); cv.height = Math.round(h * d); stars = null; drawn = ''; }
+      if (cv.width !== Math.round(w * d) || cv.height !== Math.round(h * d)) { cv.width = Math.round(w * d); cv.height = Math.round(h * d); stars = null; net = null; drawn = ''; }
       const g = cv.getContext('2d'), t = now / 1000;
       g.setTransform(d, 0, 0, d, 0, 0);
       if (theme === 'basic') { if (drawn !== w + 'x' + h) { drawBasic(g, w, h); drawn = w + 'x' + h; } return; }
-      if (theme === 'arcade') drawArcade(g, w, h, t); else drawStars(g, w, h, t);
+      if (theme === 'arcade') drawArcade(g, w, h, t); else if (theme === 'neural') drawNeural(g, w, h, t); else drawStars(g, w, h, t);
     }
     const api = {
       set(th) {
