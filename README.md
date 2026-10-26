@@ -79,7 +79,9 @@ Then open http://localhost:8417. Handy links: `#archive`, `#archive/ship`, `#dos
 
 ## It's online
 
-**Live at https://darskye.github.io/reliance/**, served by GitHub Pages from the `main` branch of [github.com/Darskye/reliance](https://github.com/Darskye/reliance). This folder is that repo.
+**Live at https://reliancemovie.com/**, served by GitHub Pages from the `main` branch of [github.com/Darskye/reliance](https://github.com/Darskye/reliance). This folder is that repo. The old address, darskye.github.io/reliance, redirects there.
+
+The domain is registered at GoDaddy. Its DNS points at GitHub with four A records on `@` (`185.199.108.153`, `185.199.109.153`, `185.199.110.153`, `185.199.111.153`) and a CNAME on `www` pointing to `darskye.github.io`. The `CNAME` file in this folder tells GitHub which domain the site answers to.
 
 To update the live site, save your changes, then from this folder:
 
@@ -87,9 +89,7 @@ To update the live site, save your changes, then from this folder:
 git add -A && git commit -m "Describe the change" && git push
 ```
 
-GitHub rebuilds it in a minute or two. Handy links for Instagram: `https://darskye.github.io/reliance/#dossier` (casting), `#fund`, `#archive/dimming`.
-
-If you move it to your own domain later, change the two `darskye.github.io/reliance` addresses in the `og:url` and `og:image` lines of `index.html` so link previews keep their picture.
+GitHub rebuilds it in a minute or two. Handy links for Instagram: `https://reliancemovie.com/#dossier` (casting), `#fund`, `#archive/dimming`.
 
 After changing a `.js` or `.css` file, bump the `?v=5` on its line in `index.html` (to `?v=6` and so on). Otherwise people who visited before may keep seeing the old version from their browser's cache.
 
