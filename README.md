@@ -6,7 +6,7 @@ The film's site is an ISEA workstation running **STARFRAME 95**, the same made-u
 
 ## The accounts
 
-The log-on screen lists the crew, who are "still logged on", so you just click one and carry on where they left off. Below them: **New account** (type any name, and it's remembered on that device) and **Visitor** (no account).
+The log-on screen lists the crew, who are "still logged on", so you just click one and carry on where they left off. Below them: **Visitor** (no account).
 
 | Account | Desktop | Their own programs |
 |---|---|---|
@@ -14,9 +14,9 @@ The log-on screen lists the crew, who are "still logged on", so you just click o
 | **Dr. Catherine Gray** | Lab green, with the Ichor specimen turning slowly as the wallpaper. | **Ichor Lab**: the specimen in 3D, glowing veins, four imaging modes (visible, UV, thermal, scan), live readouts, a deep scan, and an observation log. **Research Log**: her notes, plus anything you log in the lab. TALOS.EXE. |
 | **John Winchester** | Neon: a grid racing toward a striped sun. | **Engine Diag** (live drive, reactor and pod gauges, a CPU graph, a log, and a Tune-up button), **Mixtape** (the promo soundtracks on a cassette deck with a level meter), **Debris Field** (Minesweeper), **Cube Crunch** (Snake, eating Cube Meals), and his joke file. |
 | **Kim Seo-yeon** | Software engineer on the Talos program. Violet and cyan, with a network of signals and Talos's face faintly behind it. | **Talos Monitor** (uptime, load, neural activity, the questions Talos asked today, diagnostics, a Pause button that doesn't quite pause), TALOS.EXE, the 1.0.4 patch notes. |
-| **New account / Visitor** | The starfield with the Helios turning. | The welcome window. |
+| **Visitor** | The starfield with the Helios turning. | The welcome window. |
 
-Every account has a **Journal**. The crew's are written in their own ink on lined paper (the entries are in `js/desktops.js`). A visitor or new account gets a blank one to write in, saved on that device.
+Every account has a **Journal**. The crew's are written in their own ink on lined paper (the entries are in `js/desktops.js`). A visitor gets a blank one to write in, saved on that device.
 
 Every account also has the film's own programs (below), so a visitor can always reach the casting form and the crowdfunding links. Whatever windows a crew account has open when you switch user are open again next time. Accounts, their pictures, wallpapers, programs and balloon messages are set in **`js/desktops.js`**.
 
@@ -34,7 +34,7 @@ Every account also has the film's own programs (below), so a visitor can always 
 | **TALOS.EXE** | A terminal where you can talk to Talos. Type HELP. |
 | **Disposal** | The recycle bin. Different in every account. |
 
-Talos greets each account differently. Making a new account called Gray, Reznov, Winchester or Kim takes you to theirs.
+Talos greets each account differently.
 
 ## The curved screen
 

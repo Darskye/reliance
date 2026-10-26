@@ -155,17 +155,8 @@ body:not(.crt-on) #glass::after { display: none; }
 .user-tile small { display: block; font: 500 14px/1.3 'Pix'; color: #c9d4ff; }
 .user-tile .go { width: 34px; height: 34px; flex: none; display: grid; place-items: center; border-radius: 8px; background: #24d04c; box-shadow: 3px 3px 0 #0a5a1c; color: var(--light); font-size: 15px; opacity: 0; transition: opacity 0.15s; }
 .user-tile:hover .go, .user-tile:focus-visible .go { opacity: 1; }
-.user-tile.new .pic, .user-tile.guest .pic { background: #22327a; }
-.user-tile.new b, .user-tile.guest b { font-size: clamp(16px, 1.7vw, 19px); }
-.new-form { display: flex; gap: 16px; align-items: flex-start; padding: 16px; border-radius: 16px 0 0 16px; background: linear-gradient(90deg, #0f1f8a, #2f5bff 70%, rgba(47,91,255,0.15)); }
-.nf-pic { width: 64px; height: 64px; flex: none; border-radius: 10px; display: grid; place-items: center; background: #22327a; box-shadow: 0 0 0 3px #fff8e8; }
-.nf-pic img { width: 46px; height: 46px; }
-.nf-fields { flex: 1; display: grid; gap: 4px; min-width: 0; }
-.nf-fields label { font: 700 15px 'Pix'; color: var(--light); }
-.nf-fields label small { font-weight: 400; color: #c9d4ff; }
-.nf-fields .field { margin-bottom: 6px; }
-.nf-btns { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-top: 4px; }
-.nf-btns .go-btn { margin: 0; }
+.user-tile.guest .pic { background: #22327a; }
+.user-tile.guest b { font-size: clamp(16px, 1.7vw, 19px); }
 .field { width: 100%; font: 400 18px 'Pix'; color: var(--text); background: var(--field); border: 0; border-radius: 6px; padding: 8px 12px; box-shadow: var(--sunken); outline: none; caret-color: var(--text); }
 .field:focus { box-shadow: var(--sunken), 0 0 0 4px rgba(255,194,26,0.65); }
 .field::placeholder { color: #a99d80; }
@@ -729,7 +720,6 @@ body[data-theme="basic"] .dicon span { text-shadow: none; }
   .user-tile { border-radius: 14px; background: rgba(10, 20, 96, 0.4); }
   .user-tile .go { opacity: 1; }
   .user-tile .pic { width: 52px; height: 52px; }
-  .new-form { border-radius: 14px; }
 }
 @media (max-height: 560px) and (min-width: 761px) { #icons { grid-template-rows: repeat(auto-fill, 86px); } .dicon img { width: 42px; height: 42px; } }
 

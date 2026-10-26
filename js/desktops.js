@@ -120,7 +120,7 @@ window.Desktops = (function () {
     },
   };
 
-  // visitors and new accounts made on the log-on screen (their journal is theirs to write)
+  // visitors (their journal is theirs to write)
   function visitor(name, key) {
     return {
       key: key || 'visitor', name, short: name, pic: 'visitor', theme: 'stars', guest: !key,

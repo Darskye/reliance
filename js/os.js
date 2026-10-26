@@ -24,8 +24,6 @@
   const sym = (rows, swap = {}) => rows.map(r => r + [...r].reverse().map(c => swap[c] || c).join(''));
   const person = sym(['........', '......kk', '.....kcc', '....kccc', '....kccc', '....kccc', '.....kcc', '......kk',
     '....kkkk', '...kcccc', '..kccccc', '..kccccc', '..kccccc', '..kkkkkk', '........', '........']);
-  const plus = person.map(r => [...r]);
-  [[9, 13], [10, 13], [11, 11], [11, 12], [11, 13], [11, 14], [11, 15], [12, 13], [13, 13]].forEach(([y, x]) => (plus[y][x] = 'G'));
   Object.assign(SF.ICONS, {
     tape: [
       '................', '................', '.kkkkkkkkkkkkkk.', '.kssssssssssssk.', '.kswwwwwwwwwwsk.', '.kswrrrrrgggwsk.',
@@ -71,7 +69,6 @@
       '.kmkkkmmmmmrmrk.', '.kmmkmmmmmmmbmk.', '.kmmmmmkkmmmmmk.', '.kmmmmkk.kkmmmk.', '.kmmmk.....kmmk.', '..kkk.......kkk.',
       '................', '................', '................', '................'],
     visitor: person,
-    newuser: plus.map(r => r.join('')),
     book: [
       '................', '..kkkkkkkkkkk...', '..krrrrrrrrrkk..', '..krrrrrrrrrkwk.', '..krrkkkkkrrkwk.', '..krrkwwwkrrkwk.',
       '..krrkkkkkrrkwk.', '..krrrrrrrrrkwk.', '..krrrrrrrrrkwk.', '..krrrrrrgrrkwk.', '..krrrrrrgrrkwk.', '..krrrrrrgrrkwk.',
@@ -334,8 +331,6 @@
     requestAnimationFrame(frame);
     return true;
   }
-  // saved accounts made with "New account" (crew accounts are always there)
-  const savedAccounts = () => store.get('accounts', []).map(a => visitor(a.name, a.key));
   const sessionOf = acct => (acct.guest ? acct.session : store.get('session_' + acct.key, acct.session));
   function statusOf(acct) {
     if (acct.status) return acct.status();
@@ -353,43 +348,18 @@
       li.appendChild(b); ul.appendChild(li);
     };
     Object.values(ACCOUNTS).forEach(a => tile(a, statusOf(a), () => resume(a)));
-    savedAccounts().forEach(a => tile(a, statusOf(a), () => resume(a)));
-    tile({ name: 'New account', pic: 'newuser' }, 'Make your own log-on', () => showNewForm(true), 'new');
     tile({ name: 'Visitor', pic: 'visitor' }, 'Look around. No account needed.', () => connect(visitor('Visitor')), 'guest');
     paintIcons(ul);
-  }
-  function showNewForm(on) {
-    $('#users').hidden = on; $('#new-form').hidden = !on;
-    $('.login-begin').textContent = on ? 'Type a name for your account' : 'To begin, click your user name';
-    if (on) { $('#new-name').value = ''; $('#new-pass').value = ''; setTimeout(() => $('#new-name').focus(), 50); }
   }
   function showLogin() {
     show('login');
     $('#dialup').hidden = true; $('#welcome').hidden = true;
-    buildUsers(); showNewForm(false);
+    buildUsers();
     const right = $('.login-right'); right.style.animation = 'none'; void right.offsetWidth; right.style.animation = '';
     if (!starsAnim) starsAnim = twinkle($('#login-stars'), 90);
     Warp.apply();
     Sound.open();
   }
-  ['#new-name', '#new-pass'].forEach(s => $(s).addEventListener('keydown', e => { if (e.key.length === 1 || e.key === 'Backspace') Sound.key(); }));
-  $('#new-cancel').addEventListener('click', () => { Sound.click(); showNewForm(false); });
-  $('#new-form').addEventListener('submit', e => {
-    e.preventDefault(); Sound.click();
-    const name = $('#new-name').value.trim().replace(/\s+/g, ' ').slice(0, 32), pass = $('#new-pass').value.trim().toLowerCase();
-    if (!name) { Sound.error(); toast('Type a user name first.'); $('#new-name').focus(); return; }
-    // the crew already have accounts: take them to theirs
-    if (/gr[ae]y|catherine/i.test(name)) { if (pass && pass !== 'ilovedarian') toast("That's not Dr. Gray's password. Logging you on anyway."); return resume(ACCOUNTS.gray); }
-    if (/reznov/i.test(name)) return resume(ACCOUNTS.reznov);
-    if (/winchester/i.test(name)) return resume(ACCOUNTS.winchester);
-    if (/seo-?yeon|^kim/i.test(name)) return resume(ACCOUNTS.kim);
-    if (/^talos$/i.test(name)) { toast('User TALOS is already logged on.'); return; }
-    if (pass === 'ilovedarian') toast("That's Dr. Gray's password. We'll pretend we didn't see that.");
-    const list = store.get('accounts', []);
-    let a = list.find(x => x.name.toLowerCase() === name.toLowerCase());
-    if (!a) { a = { name, key: 'u_' + Date.now().toString(36) }; list.unshift(a); store.set('accounts', list.slice(0, 5)); }
-    connect(visitor(a.name, a.key));
-  });
   $('#turn-off').addEventListener('click', () => shutDown());
 
   let user = visitor('Visitor');

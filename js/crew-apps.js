@@ -260,7 +260,7 @@
   };
 
   // ════════════════════════════════════════════════════════════════ EVERYONE: the journal
-  // crew journals are written in desktops.js (in each one's own ink); visitors and new accounts write their own
+  // crew journals are written in desktops.js (in each one's own ink); visitors write their own
   const journalKey = () => 'journal_' + OS.account.key;
   H.journal = {
     init() {
