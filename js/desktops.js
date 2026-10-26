@@ -15,12 +15,13 @@ window.Desktops = (function () {
     fund: { title: 'Fuel Drive', label: 'Fuel Drive', icon: 'battery', w: 700, h: 680, desc: 'Back us on GoFundMe' },
     talos: { title: 'TALOS.EXE', label: 'TALOS.EXE', icon: 'talos', w: 720, h: 540, desc: 'Say hello', cls: 'talos-win' },
     journal: { title: 'Journal', label: 'Journal', icon: 'book', w: 620, h: 640 },
+    msgr: { title: 'ISEA Messenger', label: 'Messenger', icon: 'msgr', w: 880, h: 620, desc: 'Read the crew\'s chats', cls: 'msgr-win' },
     bin: { title: 'Disposal', label: 'Disposal', icon: 'bin', w: 470, h: 430 },
     // Gray
     ichor: { title: 'ICHOR LAB · Specimen IC-0417', label: 'Ichor Lab', icon: 'rock', w: 1080, h: 690, desc: 'Study the specimen' },
     notes: { title: 'research_log.txt · Notepad', label: 'Research Log', icon: 'doc', w: 620, h: 580 },
     // Reznov
-    photos: { title: 'Family · Photos', label: 'Family', icon: 'photo', w: 940, h: 660 },
+    photos: { title: 'Family · Photos', label: 'Family', icon: 'photo', w: 520, h: 680 },
     orders: { title: 'mission_orders.txt · Notepad', label: 'Mission Orders', icon: 'doc', w: 580, h: 540 },
     // Winchester
     diag: { title: 'DIAG.EXE · Helios Engineering', label: 'Engine Diag', icon: 'gauge', w: 880, h: 660, desc: 'Live ship systems' },
@@ -41,7 +42,7 @@ window.Desktops = (function () {
     reznov: {
       key: 'reznov', name: 'Cmdr. Roman Reznov', short: 'Commander', pic: 'insignia', theme: 'basic',
       status: () => 'Logged on · last active 214 days ago',
-      desk: ['photos', 'journal', 'orders', ...SITE, 'bin'],
+      desk: ['photos', 'journal', 'msgr', 'orders', ...SITE, 'bin'],
       session: ['photos', 'tour'],
       balloon: { title: 'STARFRAME TIP', text: 'Click an icon once to open it.', small: 'Tip 1 of 212', open: 'tour' },
       talos: 'Commander. It has been 214 days.',
@@ -52,13 +53,13 @@ window.Desktops = (function () {
         ['Day 140', 'Mama knitted me socks for space. Papa says a man should be there when his child is born. Mama says a man should come home. They are both right. I did not tell them that.'],
         ['Day 171', 'Anya wants Sasha if it is a boy. Mila if it is a girl. I said Sasha works for both. She threw a slipper at me. I think that means yes.'],
         ['Day 203', 'Met the crew properly. Dr. Gray works too late. Winchester talks too much. Good. A quiet ship is a frightened ship.'],
-        ['Day 226', 'Printed the photographs. The computer asked if I wanted to make one my "wallpaper". No.'],
-        ['Day 230', 'Packed: the photographs. Mama\'s socks. Anya\'s letter. I am not to open it until we leave orbit. I will not open it until we leave orbit.'],
+        ['Day 226', 'Scanned the picture of the baby into the computer. The computer asked if I wanted to make it my "wallpaper". No.'],
+        ['Day 230', 'Packed: the scan of the baby. Mama\'s socks. Anya\'s letter. I am not to open it until we leave orbit. I will not open it until we leave orbit.'],
       ],
     },
     gray: {
       key: 'gray', name: 'Dr. Catherine Gray', short: 'Dr. Gray', pic: 'photo', theme: 'lab',
-      desk: ['ichor', 'notes', 'journal', 'talos', ...SITE, 'bin'],
+      desk: ['ichor', 'notes', 'journal', 'msgr', 'talos', ...SITE, 'bin'],
       session: ['notes', 'ichor'],
       balloon: { title: 'ICHOR LAB', text: 'Overnight scan complete. 3 new readings.', small: 'Click to open the lab', open: 'ichor' },
       talos: 'Hello, Dr. Gray.',
@@ -78,8 +79,8 @@ window.Desktops = (function () {
     },
     winchester: {
       key: 'winchester', name: 'John Winchester', short: 'Winchester', pic: 'pad', theme: 'arcade',
-      desk: ['diag', 'mixtape', 'mines', 'snake', 'journal', 'jokes', ...SITE, 'talos', 'bin'],
-      session: ['diag', 'mixtape', 'mines'],
+      desk: ['diag', 'mixtape', 'msgr', 'mines', 'snake', 'journal', 'jokes', ...SITE, 'talos', 'bin'],
+      session: ['diag', 'mixtape', 'msgr'],
       balloon: { title: 'DIAG.EXE', text: 'Nozzle 4 running 0.3% hot.', small: 'Probably fine.', open: 'diag' },
       talos: 'Hello, Mr. Winchester. Please stop overclocking the main drive.',
       bin: [
@@ -99,7 +100,7 @@ window.Desktops = (function () {
     },
     kim: {
       key: 'kim', name: 'Kim Seo-yeon', short: 'Seo-yeon', pic: 'coder', theme: 'neural',
-      desk: ['talosmon', 'talos', 'journal', 'patch', ...SITE, 'bin'],
+      desk: ['talosmon', 'talos', 'msgr', 'journal', 'patch', ...SITE, 'bin'],
       session: ['talos', 'talosmon'],
       balloon: { title: 'TALOSMON', text: 'Talos was awake all night again.', small: 'All systems nominal.', open: 'talosmon' },
       talos: 'Hello, Seo-yeon. You are early.',
@@ -123,7 +124,7 @@ window.Desktops = (function () {
   function visitor(name, key) {
     return {
       key: key || 'visitor', name, short: name, pic: 'visitor', theme: 'stars', guest: !key,
-      desk: [...SITE, 'journal', 'talos', 'bin'],
+      desk: [...SITE, 'msgr', 'journal', 'talos', 'bin'],
       session: ['welcome'],
       balloon: { title: 'ISEA-NET connected', text: 'The Fuel Drive is live: back RELIANCE on GoFundMe.', small: 'Click to open the Fuel Drive', open: 'fund' },
       talos: `Hello, ${name}.`,

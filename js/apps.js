@@ -443,6 +443,13 @@
     if (has('thank', 'thanks')) return [[`You're welcome, ${name()}.`]];
     return [[pick([`I don't understand. Type HELP.`, `Rephrase the question, ${name()}.`, 'That information is restricted.', 'Processing...', 'Interesting.'])]];
   }
+  // the same answers, as one line of text, for when someone messages Talos in the messenger
+  window.TalosReply = raw => {
+    const r = reply(raw);
+    if (!Array.isArray(r)) return 'I am here.';
+    if (r.includes('exit')) return `Goodbye, ${name()}.`;
+    return r.filter(x => Array.isArray(x)).map(x => x[0]).join(' ') || 'I am here.';
+  };
   async function talosSay(items) {
     talos.busy = true;
     for (const it of items) {

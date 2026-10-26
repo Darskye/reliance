@@ -84,6 +84,10 @@
       '.kwtrrrr', '.kwttrrr', '.kwttttt', '.kwttttt', '.kwwwwww', '..kkkkkk', '........', '........']),
     coder: sym(['........', '....kkkk', '...kkkkk', '..kkkkkk', '..kkcccc', '..kkcccc', '..kbbbcb', '..kkcccc',
       '..kkcccc', '..kkkccr', '..kk.kcc', '....tttt', '...ttttt', '..tttttt', '..tttttt', '........']),
+    msgr: [
+      '................', '................', '.....kkk..kkk...', '...koook.ktttk..', '...koook.ktttk..', '....kkk...kkk...',
+      '..kooook.ktttttk', '.koooooktttttttk', '.koooooktttttttk', '.koooooktttttttk', '.kkkkkkkkkkkkkkk', '................',
+      '................', '................', '................', '................'],
   });
   const iconCache = {};
   function icon(name) {
@@ -435,7 +439,7 @@
   let zTop = 10, focused = null, pendingApp = null, wasMobile = isMobile();
 
   // WELCOME.TXT's big buttons, one per program of the film's own
-  ['brief', 'archive', 'helios', 'dossier', 'comms', 'fund', 'talos'].forEach(id => {
+  ['brief', 'archive', 'helios', 'dossier', 'comms', 'fund', 'msgr', 'talos'].forEach(id => {
     const b = document.createElement('button'); b.type = 'button'; b.className = 'launcher'; b.dataset.open = id;
     b.innerHTML = `<img data-icon="${APPS[id].icon}" alt=""><span><b></b><small></small></span>`;
     $('b', b).textContent = APPS[id].label; $('small', b).textContent = APPS[id].desc;
@@ -831,7 +835,7 @@
     clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('show'), ms);
   }
 
-  // ---------------------------------------------------------------- deep links: #archive, #archive/midnight, #dossier ...
+  // ---------------------------------------------------------------- deep links: #archive, #archive/ship, #dossier ...
   function setHash(id, sub) {
     const h = id && id !== 'welcome' ? '#' + id + (sub ? '/' + sub : '') : '';
     if (location.hash !== h) history.replaceState(null, '', h || location.pathname + location.search);

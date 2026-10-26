@@ -14,7 +14,6 @@ graynews|graynews/ISEA_GRAY_Newswire_9x16.mp4|12.5
 cubemeal|cubemeal/ISEA_CUBEMEAL_9x16.mp4|39.5
 dimming|dimming/ISEA_THE_DIMMING_9x16.mp4|27.4
 cybercuff|cybercuff/KOTOSHIMA_CYBERCUFF_9x16.mp4|43.0
-midnight|midnight/MIDNIGHT_HOUR_TALOS_9x16.mp4|15.0
 cockpit|cockpit/ISEA_HELIOS_Cockpit_9x16.mp4|14.0"
 echo "$LIST" | while IFS='|' read -r name file pt; do
   [ -f "$OUT/$name.mp4" ] || ffmpeg -nostdin -loglevel error -y -i "$SRC/$file" \

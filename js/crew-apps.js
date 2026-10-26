@@ -291,16 +291,10 @@
   };
 
   // ════════════════════════════════════════════════════════════════ REZNOV: the family album
-  // photographs made on Higgsfield (media/reznov); captions in his hand, Russian then English
+  // photographs made on Higgsfield (media/reznov); captions in his hand, Russian then English.
+  // Add a line to give him more; with one photo the album hides its arrows and thumbnails.
   const PHOTOS = [
-    ['01_anya', 'Аня. Шесть месяцев.', 'Anya. Six months.'],
-    ['02_booties', 'Вяжет пинетки. Опять.', 'Knitting booties. Again.'],
     ['03_scan', 'Наш малыш.', 'Our little one.'],
-    ['04_dinner', 'Ужин у мамы.', 'Dinner at Mama\'s.'],
-    ['05_mama_papa', 'Мама и папа.', 'Mama and Papa.'],
-    ['06_babushka', 'Бабушка и её голуби.', 'Babushka and her pigeons.'],
-    ['07_dacha', 'Дача. Прошлое лето.', 'The dacha. Last summer.'],
-    ['08_buran', 'Буран. Хороший пёс.', 'Buran. Good dog.'],
   ];
   const al = { i: 0 };
   function alShow(i) {
@@ -320,6 +314,7 @@
         b.addEventListener('click', () => { S.click(); alShow(k); });
         box.appendChild(b);
       });
+      art.classList.toggle('single', PHOTOS.length === 1);
       $('#al-prev').addEventListener('click', () => { S.click(); alShow(al.i - 1); });
       $('#al-next').addEventListener('click', () => { S.click(); alShow(al.i + 1); });
       addEventListener('keydown', e => {

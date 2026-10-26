@@ -15,7 +15,7 @@
 <link rel="icon" href="media/favicon.svg" type="image/svg+xml">
 <link rel="preload" href="fonts/PixelifySans.ttf" as="font" type="font/ttf" crossorigin>
 <link rel="preload" href="fonts/VT323.ttf" as="font" type="font/ttf" crossorigin>
-<link rel="stylesheet" href="css/os.css?v=6">
+<link rel="stylesheet" href="css/os.css?v=8">
 </head>
 <body class="crt-on">
 
@@ -138,7 +138,7 @@
     <div id="windows"></div>
     <button id="balloon" class="balloon" type="button" hidden>
       <img data-icon="modem" alt="">
-      <span><b id="balloon-title">ISEA-NET connected</b><span id="balloon-text">New tape recovered: The Midnight Hour</span><small id="balloon-small">Click to open the Tape Vault</small></span>
+      <span><b id="balloon-title">ISEA-NET connected</b><span id="balloon-text">The Fuel Drive is live: back RELIANCE on GoFundMe.</span><small id="balloon-small">Click to open the Fuel Drive</small></span>
     </button>
     <div id="startmenu" class="startmenu" hidden>
       <div class="sm-banner" aria-hidden="true"><span>STARFRAME<b>95</b></span></div>
@@ -433,7 +433,7 @@
       <div class="fund-btns">
         <a class="fund-btn gfm" data-link="gofundme" href="#"><b>GoFundMe</b><small class="fund-state">Donate now ▶</small></a>
       </div>
-      <h4 class="sec-h">What your watts power</h4>
+      <h4 class="sec-h">What your support funds</h4>
       <ul class="powers">
         <li><img data-icon="ship" alt=""><span><b>The Helios</b> flight deck and interior sets</span></li>
         <li><img data-icon="idcard" alt=""><span><b>Costumes and props</b>, CyberCuffs included</span></li>
@@ -707,20 +707,54 @@ KNOWN ISSUES
   Investigating.
 - Talos asks what dreams are. Not a bug. Probably.</pre></div>
   </article>
+
+  <!-- ══════════════ everyone: ISEA Messenger ══════════════ -->
+  <article class="app" data-app="msgr">
+    <div class="msgr" id="msgr">
+      <aside class="ms-list">
+        <div class="ms-brand"><img data-icon="msgr" alt=""><b>ISEA</b> Messenger</div>
+        <div class="ms-me"><span class="ms-dp" id="ms-me-dp"></span><div><b id="ms-me-name"></b> <span class="ms-status" id="ms-me-status"></span><small id="ms-me-psm"></small></div></div>
+        <div class="ms-search"><input class="field" id="ms-find" placeholder="Find a contact..." aria-label="Find a contact" autocomplete="off"></div>
+        <div class="ms-groups" id="ms-groups"></div>
+      </aside>
+      <section class="ms-chat">
+        <header class="ms-to">
+          <button class="btn ms-back" type="button" id="ms-back" aria-label="Back to contacts">◀</button>
+          <span class="ms-dp" id="ms-to-dp"></span>
+          <div><b id="ms-to-name">Pick a contact</b><small id="ms-to-psm"></small></div>
+        </header>
+        <div class="ms-log" id="ms-log" aria-live="polite"></div>
+        <p class="ms-typing" id="ms-typing" hidden></p>
+        <form class="ms-compose" id="ms-compose" hidden autocomplete="off">
+          <div class="ms-tools">
+            <button class="ms-tool" type="button" data-emo=":)" aria-label="Smile">:)</button>
+            <button class="ms-tool" type="button" data-emo=":D" aria-label="Grin">:D</button>
+            <button class="ms-tool" type="button" data-emo=";)" aria-label="Wink">;)</button>
+            <button class="ms-tool" type="button" data-emo=":P" aria-label="Tongue">:P</button>
+            <button class="ms-tool" type="button" data-emo=":(" aria-label="Sad">:(</button>
+            <button class="ms-tool ms-nudge" type="button" id="ms-nudge">Nudge</button>
+          </div>
+          <div class="ms-input"><textarea id="ms-text" rows="2" maxlength="300" aria-label="Type a message"></textarea><button class="btn" type="submit">Send</button></div>
+        </form>
+        <p class="ms-readonly" id="ms-readonly" hidden>You're reading an archived ISEA-NET conversation. Log on as a crew member to chat, or message Talos.</p>
+      </section>
+    </div>
+  </article>
 </div>
 
-<script src="js/config.js?v=6"></script>
+<script src="js/config.js?v=8"></script>
 <script src="js/lib/kit.js"></script>
 <script src="js/lib/emblem.js"></script>
 <script src="js/lib/starframe.js"></script>
 <script src="js/lib/ship_lines.js"></script>
 <script src="js/lib/gray_photo.js"></script>
 <script src="js/lib/talos_face.js"></script>
-<script src="js/desktops.js?v=6"></script>
-<script src="js/ichor.js?v=6"></script>
-<script src="js/os.js?v=6"></script>
-<script src="js/apps.js?v=6"></script>
-<script src="js/crew-apps.js?v=6"></script>
-<script src="js/games.js?v=6"></script>
+<script src="js/desktops.js?v=8"></script>
+<script src="js/ichor.js?v=8"></script>
+<script src="js/os.js?v=8"></script>
+<script src="js/apps.js?v=8"></script>
+<script src="js/crew-apps.js?v=8"></script>
+<script src="js/games.js?v=8"></script>
+<script src="js/messenger.js?v=8"></script>
 </body>
 </html>

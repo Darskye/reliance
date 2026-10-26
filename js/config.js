@@ -31,8 +31,6 @@ window.RELIANCE_CONFIG = {
   // To add a new video: put the mp4 in media/video/, a poster image in media/posters/,
   // and add a line here. "new: true" puts a NEW sticker on it.
   tapes: [
-    { id: 'midnight', cat: 'Recovered tapes', title: 'The Midnight Hour with Dale Harper', runtime: '0:46', new: true,
-      desc: 'An off-air VHS of a late-night talk show. Tonight\'s guest is the agency\'s thinking machine, in an early form: Talos.' },
     { id: 'talos', cat: 'Recovered tapes', title: 'TALOS.EXE', runtime: '0:58',
       desc: 'Workstation capture. Dr. Catherine Gray logs on to STARFRAME 95 and opens a program called TALOS.' },
     { id: 'ident', cat: 'ISEA broadcasts', title: 'ISEA Station Ident', runtime: '0:12',

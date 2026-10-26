@@ -10,7 +10,7 @@ The log-on screen lists the crew, who are "still logged on", so you just click o
 
 | Account | Desktop | Their own programs |
 |---|---|---|
-| **Cmdr. Roman Reznov** | Never touched since setup: the default teal background and grey-blue title bars. "You last logged on 214 days ago." | **Family**: his photo album (his pregnant wife Anya, his parents, his babushka, the dacha, the dog Buran, the baby's scan), captioned in his hand in Russian and English. Mission Orders, the STARFRAME tour. Empty Disposal. |
+| **Cmdr. Roman Reznov** | Never touched since setup: the default teal background and grey-blue title bars. "You last logged on 214 days ago." | **Family**: the ultrasound scan of his baby on the fridge, captioned in his hand in Russian and English. (Add more photos to `PHOTOS` in `js/crew-apps.js`.) Mission Orders, the STARFRAME tour. Empty Disposal. |
 | **Dr. Catherine Gray** | Lab green, with the Ichor specimen turning slowly as the wallpaper. | **Ichor Lab**: the specimen in 3D, glowing veins, four imaging modes (visible, UV, thermal, scan), live readouts, a deep scan, and an observation log. **Research Log**: her notes, plus anything you log in the lab. TALOS.EXE. |
 | **John Winchester** | Neon: a grid racing toward a striped sun. | **Engine Diag** (live drive, reactor and pod gauges, a CPU graph, a log, and a Tune-up button), **Mixtape** (the promo soundtracks on a cassette deck with a level meter), **Debris Field** (Minesweeper), **Cube Crunch** (Snake, eating Cube Meals), and his joke file. |
 | **Kim Seo-yeon** | Software engineer on the Talos program. Violet and cyan, with a network of signals and Talos's face faintly behind it. | **Talos Monitor** (uptime, load, neural activity, the questions Talos asked today, diagnostics, a Pause button that doesn't quite pause), TALOS.EXE, the 1.0.4 patch notes. |
@@ -30,6 +30,7 @@ Every account also has the film's own programs (below), so a visitor can always 
 | **Crew Dossier** | The audition and crew sign-up form. When it's sent, it prints the person an ISEA ID badge (with their own photo in green phosphor, if they add one) that they can save and post. |
 | **ISEA-NET** | The Instagram pages and a mailing-list sign-up. |
 | **Fuel Drive** | The GoFundMe campaign, plus a mailing-list sign-up. |
+| **ISEA Messenger** | The crew's chat program, laid out like a 2000s instant messenger: contacts with status dots and personal messages, "says:" lines, emoticons, nudges that shake the window. Logged on as crew, you see that person's chats and can type (the others answer; Reznov is always Away; Talos answers like TALOS.EXE). Visitors read every conversation as an archive and can message Talos. The conversations are in `js/messenger.js`. |
 | **TALOS.EXE** | A terminal where you can talk to Talos. Type HELP. |
 | **Disposal** | The recycle bin. Different in every account. |
 
@@ -74,7 +75,7 @@ It has to be served, not double-clicked (browsers block some of it from plain fi
 python -m http.server 8417
 ```
 
-Then open http://localhost:8417. Handy links: `#archive`, `#archive/midnight`, `#dossier`, `#fund`, `#brief`, `#helios`, `#talos` go straight to that program and skip the intro.
+Then open http://localhost:8417. Handy links: `#archive`, `#archive/ship`, `#dossier`, `#fund`, `#brief`, `#helios`, `#talos` go straight to that program and skip the intro.
 
 ## It's online
 
@@ -86,7 +87,7 @@ To update the live site, save your changes, then from this folder:
 git add -A && git commit -m "Describe the change" && git push
 ```
 
-GitHub rebuilds it in a minute or two. Handy links for Instagram: `https://darskye.github.io/reliance/#dossier` (casting), `#fund`, `#archive/midnight`.
+GitHub rebuilds it in a minute or two. Handy links for Instagram: `https://darskye.github.io/reliance/#dossier` (casting), `#fund`, `#archive/dimming`.
 
 If you move it to your own domain later, change the two `darskye.github.io/reliance` addresses in the `og:url` and `og:image` lines of `index.html` so link previews keep their picture.
 
@@ -104,9 +105,10 @@ js/os.js          power, BIOS, splash, the account list, dial-up, desktops and w
 js/apps.js        the film's programs: the Helios viewer, tape deck, dossier and badge, Talos...
 js/crew-apps.js   the crew's programs: Ichor Lab, Research Log, tour, Engine Diag, Mixtape, Disposal
 js/games.js       Debris Field and Cube Crunch
+js/messenger.js   ISEA Messenger: the contacts, every conversation, the auto-replies
 js/ichor.js       the Ichor specimen in 3D (plain WebGL): the rock's shape, glowing veins, bloom, dust
 media/music       the promo soundtracks, for the Mixtape
-media/reznov      Reznov's family photos (made on Higgsfield; the full-size originals are in tools/reznov_src, not uploaded)
+media/reznov      Reznov's ultrasound photo (made on Higgsfield; the full-size originals are in tools/reznov_src, not uploaded)
 js/lib/           shared with the promos: kit.js, emblem.js (ISEA emblem), starframe.js (logo, icons,
                   Helios wireframe), ship_lines.js (the ship), gray_photo.js, talos_face.js
 media/video       web copies of the spots     media/posters  one still from each
